@@ -1,10 +1,12 @@
 package org.esti.backend_esti.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.esti.backend_esti.Form.AdminForm;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -35,6 +37,16 @@ public class Admin {
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
+    @NotNull
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
     public Admin(final AdminForm form) {
         this.name = form.getName();
         this.lastName = form.getLastName();
@@ -60,5 +72,20 @@ public class Admin {
             this.password = form.getPassword();
         }
     }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void markAsDeleted() {
+        this.deletedAt = LocalDateTime.now();
+    }
+
 
 }

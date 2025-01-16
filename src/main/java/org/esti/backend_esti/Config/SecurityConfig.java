@@ -36,6 +36,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(HttpMethod.GET, "/esti/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/esti/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
