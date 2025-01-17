@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.esti.backend_esti.Form.ReportForm;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +45,7 @@ public class Report {
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
     private ReportStatus status = ReportStatus.EN_PROGRESO;
 
@@ -55,6 +57,26 @@ public class Report {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public Report(final ReportForm form) {
+        this.reportTitle = form.getReportTitle();
+        this.monthStart = form.getMonthStart();
+        this.monthEnd = form.getMonthEnd();
+        this.academicYear = form.getAcademicYear();
+        this.createdBy = form.getCreatedBy();
+        this.notes = form.getNotes();
+        this.status = form.getStatus();
+    }
+
+    public void updateReport(final ReportForm form) {
+        this.reportTitle = form.getReportTitle();
+        this.monthStart = form.getMonthStart();
+        this.monthEnd = form.getMonthEnd();
+        this.academicYear = form.getAcademicYear();
+        this.createdBy = form.getCreatedBy();
+        this.notes = form.getNotes();
+        this.status = form.getStatus();
+    }
 
     @PrePersist
     public void prePersist() {

@@ -19,7 +19,7 @@ public class ReportForm implements Serializable {
 
     private String academicYear;
 
-    private Long createdBy;
+    private Admin createdBy;
 
     private String notes;
 
