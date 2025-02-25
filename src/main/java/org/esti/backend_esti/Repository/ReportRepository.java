@@ -1,13 +1,12 @@
 package org.esti.backend_esti.Repository;
 
-import org.esti.backend_esti.Entity.Group;
-import org.esti.backend_esti.Entity.Report;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import org.esti.backend_esti.Entity.Report;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
     @Query("SELECT r FROM Report r " +

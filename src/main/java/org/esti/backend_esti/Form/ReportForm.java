@@ -1,12 +1,13 @@
 package org.esti.backend_esti.Form;
 
 
-import lombok.Data;
+import java.io.Serializable;
+import java.time.LocalDate;
+
 import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Entity.ReportStatus;
 
-import java.io.Serializable;
-import java.time.LocalDate;
+import lombok.Data;
 
 @Data
 public class ReportForm implements Serializable {
