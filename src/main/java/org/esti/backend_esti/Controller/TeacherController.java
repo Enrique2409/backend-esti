@@ -1,7 +1,10 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
+import org.esti.backend_esti.DTO.GroupDTO;
 import org.esti.backend_esti.DTO.TeacherDTO;
+import org.esti.backend_esti.Entity.Group;
+import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.TeacherForm;
 import org.esti.backend_esti.Service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,12 @@ public class TeacherController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{teacherId}")
+    public ResponseEntity<Void> deleteTeacherLogically(@PathVariable Long teacherId) throws Exception{
+        teacherService.deleteTeacherLogically(teacherId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{teacherId}")
     public ResponseEntity<TeacherDTO> findById(@PathVariable("teacherId") final Long teacherId) throws Exception {
         TeacherDTO teacherDTO = teacherService.findById(teacherId);
@@ -45,5 +54,12 @@ public class TeacherController {
     public ResponseEntity<List<TeacherDTO>> getAllTeachers() throws Exception {
         List<TeacherDTO> teachersDTO = teacherService.getAllTeachers();
         return ResponseEntity.ok().body(teachersDTO);
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<TeacherDTO>> getAllActiveTeachers() {
+        List<Teacher> activeTeachers = teacherService.getAllActiveTeachers();
+        List<TeacherDTO> activeTeacherDTOs = activeTeachers.stream().map(TeacherDTO::build).toList();
+        return ResponseEntity.ok(activeTeacherDTOs);
     }
 } 

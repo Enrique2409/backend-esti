@@ -1,12 +1,14 @@
 package org.esti.backend_esti.Service;
 
 import org.esti.backend_esti.DTO.TeacherDTO;
+import org.esti.backend_esti.Entity.Group;
 import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.TeacherForm;
 import org.esti.backend_esti.Repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,6 +20,7 @@ public class TeacherService {
     public TeacherDTO createTeacher(final TeacherForm form) {
         final Teacher teacher = new Teacher(form);
         teacherRepository.save(teacher);
+        teacher.setCreatedAt(LocalDateTime.now());
         return TeacherDTO.build(teacher);
     }
 
@@ -45,6 +48,18 @@ public class TeacherService {
     public List<TeacherDTO> getAllTeachers() throws Exception {
         final List<Teacher> teachers = teacherRepository.findAll();
         return teachers.stream().map(TeacherDTO::build).toList();
+    }
+
+    public List<Teacher> getAllActiveTeachers() {
+        return teacherRepository.findAllActive();
+    }
+
+    public void deleteTeacherLogically(Long idTeacher) throws Exception {
+        Teacher existingTeacher = teacherRepository.findById(idTeacher).orElseThrow(() ->
+                new Exception("Group not found with id: " + idTeacher)
+        );
+        existingTeacher.markAsDeleted();
+        teacherRepository.save(existingTeacher);
     }
 
     public void validateIfTeacherExists(Long idTeacher) throws Exception {

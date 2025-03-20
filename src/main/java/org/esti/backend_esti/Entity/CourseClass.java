@@ -3,6 +3,7 @@ package org.esti.backend_esti.Entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.esti.backend_esti.Form.ClassForm;
 
 import java.time.LocalDateTime;
 
@@ -13,22 +14,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "classes")
-public class Class {
+public class CourseClass {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_class")
     private Long idClass;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "level_id", referencedColumnName = "id_level", nullable = false)
     private Level level;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "group_id", referencedColumnName = "id_group", nullable = false)
     private Group group;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "subject_teacher_id", referencedColumnName = "id_subject_teacher", nullable = false)
     private SubjectTeacher subjectTeacher;
 
@@ -42,7 +43,7 @@ public class Class {
     @Column(name = "deleted_at", nullable = true)
     private LocalDateTime deletedAt;
 
-    public Class(final ClassForm form) {
+    public CourseClass(final ClassForm form) {
         if (form == null) {
             throw new IllegalArgumentException("El formulario de clase no puede ser nulo.");
         }

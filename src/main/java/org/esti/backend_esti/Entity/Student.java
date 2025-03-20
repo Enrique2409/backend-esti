@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import org.esti.backend_esti.Form.StudentForm;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,12 +44,16 @@ public class Student {
     private String phoneNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id", referencedColumnName = "id_class", nullable = false)
+    private CourseClass courseClass;
+
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id", referencedColumnName = "id_level", nullable = false)
     private Level level;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", referencedColumnName = "id_group", nullable = false)
-    private Group group;
+    private Group group;*/
 
     @NotNull
     @Column(name = "created_at", updatable = false)
