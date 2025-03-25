@@ -1,7 +1,10 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
+import org.esti.backend_esti.DTO.GroupDTO;
 import org.esti.backend_esti.DTO.SubjectDTO;
+import org.esti.backend_esti.Entity.Group;
+import org.esti.backend_esti.Entity.Subject;
 import org.esti.backend_esti.Form.SubjectForm;
 import org.esti.backend_esti.Service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +32,16 @@ public class SubjectController {
         return ResponseEntity.ok().body(subjectDTO);
     }
 
-    @DeleteMapping("/{subjectId}")
+    @DeleteMapping("/{subjectId}/hard")
     public ResponseEntity<Void> deleteSubject(@PathVariable("subjectId") final Long subjectId) throws Exception {
         subjectService.deleteSubject(subjectId);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{subjectId}")
+    public ResponseEntity<Void> deleteSubjectLogically(@PathVariable Long subjectId) throws Exception{
+        subjectService.deleteSubjectLogically(subjectId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{subjectId}")
@@ -45,5 +54,12 @@ public class SubjectController {
     public ResponseEntity<List<SubjectDTO>> getAllSubjects() throws Exception {
         List<SubjectDTO> subjectsDTO = subjectService.getAllSubjects();
         return ResponseEntity.ok().body(subjectsDTO);
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<SubjectDTO>> getAllActiveSubjects() {
+        List<Subject> activeSubjects = subjectService.getAllActiveSubjects();
+        List<SubjectDTO> activeSubjectDTOs = activeSubjects.stream().map(SubjectDTO::build).toList();
+        return ResponseEntity.ok(activeSubjectDTOs);
     }
 } 

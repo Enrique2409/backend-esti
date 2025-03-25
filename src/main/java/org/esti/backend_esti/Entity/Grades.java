@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.esti.backend_esti.Form.GradesForm;
 
 import java.time.LocalDateTime;
 

@@ -3,6 +3,7 @@ package org.esti.backend_esti.Entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.esti.backend_esti.Form.SubjectForm;
 
 import java.time.LocalDateTime;
 
@@ -43,11 +44,19 @@ public class Subject {
 
     public Subject(final SubjectForm form) {
         this.name = form.getName();
+        this.level = form.getLevel();
+        this.group = form.getGroup();
     }
 
     public void updateSubject(final SubjectForm form) {
         if (form.getName() != null) {
             this.name = form.getName();
+        }
+        if (form.getLevel() != null) {
+            this.level = form.getLevel();
+        }
+        if (form.getGroup() != null) {
+            this.group = form.getGroup();
         }
     }
 

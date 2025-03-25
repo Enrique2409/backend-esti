@@ -25,7 +25,7 @@ public class GradesController {
 
     @PatchMapping("/{gradeId}")
     public ResponseEntity<GradesDTO> updateGrade(@RequestBody @Valid GradesForm form, @PathVariable("gradeId") final Long gradeId) throws Exception {
-        GradesDTO gradesDTO = gradesService.updateGrade(form, gradeId);
+        GradesDTO gradesDTO = gradesService.updateGrades(form, gradeId);
         return ResponseEntity.ok().body(gradesDTO);
     }
 

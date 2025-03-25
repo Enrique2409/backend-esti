@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GradesRepository extends JpaRepository<Grades, Long> {
-    // Métodos personalizados para buscar calificaciones por estudiante o materia
+
 } 

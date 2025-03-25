@@ -21,10 +21,10 @@ public class GradesService {
         return GradesDTO.build(grade);
     }
 
-    public GradesDTO updateGrade(final GradesForm form, Long idGrade) throws Exception {
+    public GradesDTO updateGrades(final GradesForm form, Long idGrade) throws Exception {
         validateIfGradeExists(idGrade);
         final Grades grade = gradesRepository.findById(idGrade).get();
-        grade.updateGrade(form);
+        grade.updateGrades(form);
         gradesRepository.save(grade);
         return GradesDTO.build(grade);
     }

@@ -1,19 +1,19 @@
 package org.esti.backend_esti.Form;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Min;
+import org.esti.backend_esti.Entity.Group;
+import org.esti.backend_esti.Entity.Level;
 
 @Data
 public class SubjectForm {
+
     @NotBlank(message = "El nombre de la materia es requerido")
-    private String subjectName;
+    private String name;
     
-    @NotBlank(message = "La descripción es requerida")
-    private String description;
-    
-    @NotNull(message = "Los créditos son requeridos")
-    @Min(value = 1, message = "Los créditos deben ser al menos 1")
-    private Integer credits;
+    private Level level;
+
+    private Group group;
 } 

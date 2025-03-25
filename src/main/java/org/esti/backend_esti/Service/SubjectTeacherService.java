@@ -1,6 +1,8 @@
 package org.esti.backend_esti.Service;
 
 import org.esti.backend_esti.DTO.SubjectTeacherDTO;
+import org.esti.backend_esti.Entity.Group;
+import org.esti.backend_esti.Entity.Subject;
 import org.esti.backend_esti.Entity.SubjectTeacher;
 import org.esti.backend_esti.Form.SubjectTeacherForm;
 import org.esti.backend_esti.Repository.SubjectTeacherRepository;
@@ -45,6 +47,18 @@ public class SubjectTeacherService {
     public List<SubjectTeacherDTO> getAllSubjectTeachers() throws Exception {
         final List<SubjectTeacher> subjectTeachers = subjectTeacherRepository.findAll();
         return subjectTeachers.stream().map(SubjectTeacherDTO::build).toList();
+    }
+
+    public List<SubjectTeacher> getAllActiveSubjectTeachers() {
+        return subjectTeacherRepository.findAllActive();
+    }
+
+    public void deleteSubjectTeacherLogically(Long idSubjectTeacher) throws Exception {
+        SubjectTeacher existingSubjectTeacher = subjectTeacherRepository.findById(idSubjectTeacher).orElseThrow(() ->
+                new Exception("Group not found with id: " + idSubjectTeacher)
+        );
+        existingSubjectTeacher.markAsDeleted();
+        subjectTeacherRepository.save(existingSubjectTeacher);
     }
 
     public void validateIfSubjectTeacherExists(Long idSubjectTeacher) throws Exception {
