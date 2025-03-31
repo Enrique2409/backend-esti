@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.esti.backend_esti.Entity.Role;
 
 @Data
 @Builder
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class AuthResponse {
 
     private String id;
+    private Role role;
     private String username;
     private String token;
 }

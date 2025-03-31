@@ -6,6 +6,7 @@ import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.TeacherForm;
 import org.esti.backend_esti.Repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,8 +18,12 @@ public class TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public TeacherDTO createTeacher(final TeacherForm form) {
         final Teacher teacher = new Teacher(form);
+        teacher.setPassword(passwordEncoder.encode(form.getPassword()));
         teacherRepository.save(teacher);
         teacher.setCreatedAt(LocalDateTime.now());
         return TeacherDTO.build(teacher);
@@ -27,6 +32,7 @@ public class TeacherService {
     public TeacherDTO updateTeacher(final TeacherForm form, Long idTeacher) throws Exception {
         validateIfTeacherExists(idTeacher);
         final Teacher teacher = teacherRepository.findById(idTeacher).get();
+        teacher.setPassword(passwordEncoder.encode(form.getPassword()));
         teacher.updateTeacher(form);
         teacherRepository.save(teacher);
         return TeacherDTO.build(teacher);

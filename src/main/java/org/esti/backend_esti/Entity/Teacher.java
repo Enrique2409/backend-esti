@@ -36,13 +36,17 @@ public class Teacher {
     @Column (name = "password", length = 255, nullable = false)
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id", referencedColumnName = "id_level", nullable = false)
     private Level level;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", referencedColumnName = "id_group", nullable = false)
     private Group group;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     @NotNull
     @Column(name = "created_at", updatable = false)
@@ -60,6 +64,7 @@ public class Teacher {
         this.phoneNumber = form.getPhoneNumber();
         this.email = form.getEmail();
         this.password = form.getPassword();
+        this.role = Role.TEACHER;
     }
 
     public void updateTeacher(final TeacherForm form) {
@@ -74,6 +79,9 @@ public class Teacher {
         }
         if (form.getEmail() != null) {
             this.email = form.getEmail();
+        }
+        if (form.getRole() != null) {
+            this.role = form.getRole();
         }
     }
 

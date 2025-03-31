@@ -30,6 +30,7 @@ public class AdminService {
     public AdminDTO updateAdmin(final AdminForm form, Long id) throws Exception {
         validateIfAdminExists(id);
         final Admin admin = adminRepository.findById(id).get();
+        admin.setPassword(passwordEncoder.encode(form.getPassword()));
         admin.updateAdmin(form);
         adminRepository.save(admin);
         return AdminDTO.build(admin);

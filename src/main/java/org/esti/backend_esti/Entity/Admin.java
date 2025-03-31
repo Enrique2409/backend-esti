@@ -37,6 +37,10 @@ public class Admin {
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
+
     @NotNull
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -53,6 +57,7 @@ public class Admin {
         this.phoneNumber = form.getPhoneNumber();
         this.email = form.getEmail();
         this.password = form.getPassword();
+        this.role = Role.ADMIN;
     }
 
     public void updateAdmin(final AdminForm form) {
@@ -70,6 +75,9 @@ public class Admin {
         }
         if (form.getPassword() != null) {
             this.password = form.getPassword();
+        }
+        if (form.getRole() != null) {
+            this.role = form.getRole();
         }
     }
 

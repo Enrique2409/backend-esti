@@ -32,7 +32,7 @@ public class TeacherController {
         return ResponseEntity.ok().body(teacherDTO);
     }
 
-    @DeleteMapping("/{teacherId}")
+    @DeleteMapping("/{teacherId}/hard")
     public ResponseEntity<Void> deleteTeacher(@PathVariable("teacherId") final Long teacherId) throws Exception {
         teacherService.deleteTeacher(teacherId);
         return ResponseEntity.ok().build();

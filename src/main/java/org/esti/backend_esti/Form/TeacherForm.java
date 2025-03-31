@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.esti.backend_esti.Entity.Group;
 import org.esti.backend_esti.Entity.Level;
+import org.esti.backend_esti.Entity.Role;
 
 import java.io.Serializable;
 
@@ -30,4 +31,6 @@ public class TeacherForm implements Serializable {
     private Level level;
 
     private Group group;
+
+    private Role role;
 } 

@@ -3,6 +3,7 @@ package org.esti.backend_esti.Form;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.esti.backend_esti.Entity.Role;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -23,4 +24,6 @@ public class AdminForm implements Serializable {
     private String email;
 
     private String password;
+
+    private Role role;
 }
