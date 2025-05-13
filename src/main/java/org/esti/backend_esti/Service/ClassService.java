@@ -6,6 +6,7 @@ import org.esti.backend_esti.Form.ClassForm;
 import org.esti.backend_esti.Repository.ClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,11 +47,13 @@ public class ClassService {
         return ClassDTO.build(classEntity);
     }
 
+    @Transactional
     public List<ClassDTO> getAllClasses() throws Exception {
         final List<CourseClass> classes = classRepository.findAll();
         return classes.stream().map(ClassDTO::build).toList();
     }
 
+    @Transactional
     public List<CourseClass> getAllActiveClasses() {
         return classRepository.findAllActive();
     }

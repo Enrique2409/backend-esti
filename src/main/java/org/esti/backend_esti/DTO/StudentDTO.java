@@ -24,7 +24,7 @@ public class StudentDTO {
     private String curp;
     private LocalDate birthDate;
     private String phoneNumber;
-    private CourseClass courseClass;
+    //private CourseClass courseClass;
 
     public static StudentDTO build(final Student student) {
         return StudentDTO.builder()
@@ -35,7 +35,7 @@ public class StudentDTO {
                 .curp(student.getCurp())
                 .birthDate(student.getBirthDate())
                 .phoneNumber(student.getPhoneNumber())
-                .courseClass(student.getCourseClass())
+                //.courseClass(student.getCourseClass())
                 .build();
     }
 

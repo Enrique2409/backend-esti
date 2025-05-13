@@ -44,7 +44,7 @@ public class Student {
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "class_id", referencedColumnName = "id_class", nullable = false)
     private CourseClass courseClass;
 
