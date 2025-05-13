@@ -6,6 +6,8 @@ import lombok.*;
 import org.esti.backend_esti.Form.ClassForm;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -29,9 +31,11 @@ public class CourseClass {
     @JoinColumn(name = "group_id", referencedColumnName = "id_group", nullable = false)
     private Group group;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "subject_teacher_id", referencedColumnName = "id_subject_teacher", nullable = false)
-    private SubjectTeacher subjectTeacher;
+    @OneToMany(mappedBy = "courseClass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Student> students = new ArrayList<>();
+
+    @OneToMany(mappedBy = "courseClass", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subject> subjects = new ArrayList<>();
 
     @NotNull
     @Column(name = "created_at", updatable = false)
@@ -47,17 +51,20 @@ public class CourseClass {
         if (form == null) {
             throw new IllegalArgumentException("El formulario de clase no puede ser nulo.");
         }
-        this.subjectTeacher = form.getSubjectTeacher();
         this.group = form.getGroup();
         this.level = form.getLevel();
+        if (form.getStudent() != null) {
+            this.students.add(form.getStudent());
+        }
+
+        if (form.getSubject() != null) {
+            this.subjects.add(form.getSubject());
+        }
     }
 
     public void updateClass(final ClassForm form) {
         if (form == null) {
             throw new IllegalArgumentException("El formulario de clase no puede ser nulo.");
-        }
-        if (form.getSubjectTeacher() != null) { 
-            this.subjectTeacher = form.getSubjectTeacher();
         }
         if (form.getGroup() != null) {
             this.group = form.getGroup();

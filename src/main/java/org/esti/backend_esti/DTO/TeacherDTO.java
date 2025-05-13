@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.esti.backend_esti.Entity.Admin;
-import org.esti.backend_esti.Entity.Group;
-import org.esti.backend_esti.Entity.Level;
-import org.esti.backend_esti.Entity.Teacher;
+import org.esti.backend_esti.Entity.*;
 
 @Data
 @Builder
@@ -24,10 +21,6 @@ public class TeacherDTO {
 
     private String email;
 
-    private Level level;
-
-    private Group group;
-
     public static TeacherDTO build(final Teacher teacher) {
         return TeacherDTO.builder()
                 .idTeacher(teacher.getIdTeacher())
@@ -35,8 +28,6 @@ public class TeacherDTO {
                 .lastName(teacher.getLastName())
                 .phoneNumber(teacher.getPhoneNumber())
                 .email(teacher.getEmail())
-                .level(teacher.getLevel())
-                .group(teacher.getGroup())
                 .build();
     }
 } 

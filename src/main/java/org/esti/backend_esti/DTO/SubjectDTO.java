@@ -16,15 +16,12 @@ import org.esti.backend_esti.Entity.Subject;
 public class SubjectDTO {
     private Long idSubject;
     private String name;
-    private Level level;
-    private Group group;
+
 
     public static SubjectDTO build(final Subject subject) {
         return SubjectDTO.builder()
                 .idSubject(subject.getIdSubject())
                 .name(subject.getName())
-                .level(subject.getLevel())
-                .group(subject.getGroup())
                 .build();
     }
 } 

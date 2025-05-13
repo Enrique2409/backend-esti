@@ -9,13 +9,13 @@ import org.esti.backend_esti.Entity.Level;
 @Builder
 public class LevelDTO {
 
-    private Long idlevel;
+    private Long idLevel;
 
     private Integer level;
 
     public static LevelDTO build(final Level level) {
         return LevelDTO.builder()
-                .idlevel(level.getIdLevel())
+                .idLevel(level.getIdLevel())
                 .level(level.getLevel())
                 .build();
     }

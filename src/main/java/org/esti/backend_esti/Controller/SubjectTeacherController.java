@@ -1,10 +1,8 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
-import org.esti.backend_esti.DTO.GroupDTO;
 import org.esti.backend_esti.DTO.SubjectTeacherDTO;
-import org.esti.backend_esti.Entity.Group;
-import org.esti.backend_esti.Entity.SubjectTeacher;
+import org.esti.backend_esti.Entity.SubjectTeacherClass;
 import org.esti.backend_esti.Form.SubjectTeacherForm;
 import org.esti.backend_esti.Service.SubjectTeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,10 +54,10 @@ public class SubjectTeacherController {
         return ResponseEntity.ok().body(subjectTeachersDTO);
     }
 
-    @GetMapping("/active")
+    /*@GetMapping("/active")
     public ResponseEntity<List<SubjectTeacherDTO>> getAllActiveSubjectTeachers() {
-        List<SubjectTeacher> activeSubjectTeachers = subjectTeacherService.getAllActiveSubjectTeachers();
+        List<SubjectTeacherClass> activeSubjectTeachers = subjectTeacherService.getAllActiveSubjectTeachers();
         List<SubjectTeacherDTO> activeSubjectTeachersDTO = activeSubjectTeachers.stream().map(SubjectTeacherDTO::build).toList();
         return ResponseEntity.ok(activeSubjectTeachersDTO);
-    }
+    }*/
 } 

@@ -8,6 +8,7 @@ import org.esti.backend_esti.Form.StudentForm;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Builder
@@ -37,23 +38,18 @@ public class Student {
     @Column(name = "curp", length = 18, nullable = false, unique = true)
     private String curp;
 
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birthdate", nullable = false)
     private LocalDate birthDate;
 
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "class_id", referencedColumnName = "id_class", nullable = false)
     private CourseClass courseClass;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "level_id", referencedColumnName = "id_level", nullable = false)
-    private Level level;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id", referencedColumnName = "id_group", nullable = false)
-    private Group group;*/
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SubjectTeacherClass> subjectTeacherClasses;
 
     @NotNull
     @Column(name = "created_at", updatable = false)
@@ -75,6 +71,7 @@ public class Student {
         this.curp = form.getCurp();
         this.birthDate = form.getBirthDate();
         this.phoneNumber = form.getPhoneNumber();
+        this.courseClass = form.getCourseClass();
     }
 
     public void updateStudent(final StudentForm form) {
@@ -98,6 +95,9 @@ public class Student {
         }
         if (form.getPhoneNumber() != null) {
             this.phoneNumber = form.getPhoneNumber();
+        }
+        if (form.getCourseClass() != null) {
+            this.courseClass = form.getCourseClass();
         }
     }
 

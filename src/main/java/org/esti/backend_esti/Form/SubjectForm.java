@@ -7,13 +7,12 @@ import lombok.Data;
 import org.esti.backend_esti.Entity.Group;
 import org.esti.backend_esti.Entity.Level;
 
+import java.io.Serializable;
+
 @Data
-public class SubjectForm {
+public class SubjectForm implements Serializable {
 
     @NotBlank(message = "El nombre de la materia es requerido")
     private String name;
-    
-    private Level level;
 
-    private Group group;
 } 

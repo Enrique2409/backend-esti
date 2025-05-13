@@ -22,7 +22,7 @@ public class GradesDTO {
 
     private Student student;
 
-    private SubjectTeacher subjectTeacher;
+    private SubjectTeacherClass subjectTeacher;
 
     public static GradesDTO build(final Grades grades) {
         return GradesDTO.builder()

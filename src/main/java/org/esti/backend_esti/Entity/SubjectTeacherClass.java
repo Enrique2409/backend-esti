@@ -6,6 +6,8 @@ import lombok.*;
 import org.esti.backend_esti.Form.SubjectTeacherForm;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -13,13 +15,17 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "subject_teacher")
-public class SubjectTeacher {
+@Table(name = "subject_teacher_class")
+public class SubjectTeacherClass {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_subject_teacher")
-    private Long idSubjectTeacher;
+    private Long idSubjectTeacherClass;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_student", referencedColumnName = "id_student")
+    private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id", referencedColumnName = "id_subject", nullable = false)
@@ -28,6 +34,10 @@ public class SubjectTeacher {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id", referencedColumnName = "id_teacher", nullable = false)
     private Teacher teacher;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id", referencedColumnName = "id_class", nullable = false)
+    private CourseClass courseClass;
 
     @NotNull
     @Column(name = "created_at", updatable = false)
@@ -40,15 +50,15 @@ public class SubjectTeacher {
     private LocalDateTime deletedAt;
     
 
-    public SubjectTeacher(final SubjectTeacherForm form) {
+    public SubjectTeacherClass(final SubjectTeacherForm form) {
         if (form == null) {
             throw new IllegalArgumentException("El formulario no puede ser nulo");
         }
         this.subject = form.getSubject();
         this.teacher = form.getTeacher();
+        this.courseClass = form.getCourseClass();
         this.createdAt = LocalDateTime.now();
     }
-    
 
     public void updateSubjectTeacher(final SubjectTeacherForm form) {
         if (form.getSubject() != null) {
@@ -56,6 +66,9 @@ public class SubjectTeacher {
         }
         if (form.getTeacher() != null) {
             this.teacher = form.getTeacher();
+        }
+        if (form.getCourseClass() != null) {
+            this.courseClass = form.getCourseClass();
         }
         this.updatedAt = LocalDateTime.now();
     }

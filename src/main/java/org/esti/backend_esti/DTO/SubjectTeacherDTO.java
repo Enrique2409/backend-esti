@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.esti.backend_esti.Entity.Admin;
+import org.esti.backend_esti.Entity.CourseClass;
 import org.esti.backend_esti.Entity.Subject;
-import org.esti.backend_esti.Entity.SubjectTeacher;
+import org.esti.backend_esti.Entity.SubjectTeacherClass;
 import org.esti.backend_esti.Entity.Teacher;
 
 @Data
@@ -21,11 +21,14 @@ public class SubjectTeacherDTO {
 
     private Teacher teacher;
 
-    public static SubjectTeacherDTO build(final SubjectTeacher subjectTeacher) {
+    private CourseClass courseClass;
+
+    public static SubjectTeacherDTO build(final SubjectTeacherClass subjectTeacher) {
         return SubjectTeacherDTO.builder()
-                .idSubjectTeacher(subjectTeacher.getIdSubjectTeacher())
+                .idSubjectTeacher(subjectTeacher.getIdSubjectTeacherClass())
                 .subject(subjectTeacher.getSubject())
                 .teacher(subjectTeacher.getTeacher())
+                .courseClass(subjectTeacher.getCourseClass())
                 .build();
     }
 } 

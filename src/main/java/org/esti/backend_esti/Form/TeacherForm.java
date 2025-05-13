@@ -28,9 +28,5 @@ public class TeacherForm implements Serializable {
     
     private String password;
 
-    private Level level;
-
-    private Group group;
-
     private Role role;
 } 

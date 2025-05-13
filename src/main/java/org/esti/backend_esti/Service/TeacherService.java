@@ -32,8 +32,12 @@ public class TeacherService {
     public TeacherDTO updateTeacher(final TeacherForm form, Long idTeacher) throws Exception {
         validateIfTeacherExists(idTeacher);
         final Teacher teacher = teacherRepository.findById(idTeacher).get();
-        teacher.setPassword(passwordEncoder.encode(form.getPassword()));
-        teacher.updateTeacher(form);
+
+        if (form.getPassword() != null && !form.getPassword().isEmpty()) {
+            String encryptedPassword = passwordEncoder.encode(form.getPassword());
+            teacher.setPassword(encryptedPassword);
+        }        teacher.updateTeacher(form);
+
         teacherRepository.save(teacher);
         return TeacherDTO.build(teacher);
     }

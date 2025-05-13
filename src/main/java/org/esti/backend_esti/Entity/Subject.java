@@ -1,11 +1,15 @@
 package org.esti.backend_esti.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.esti.backend_esti.Form.SubjectForm;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -14,6 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "subject")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Subject {
 
     @Id
@@ -25,12 +30,11 @@ public class Subject {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "level_id", referencedColumnName = "id_level", nullable = false)
-    private Level level;
+    @JoinColumn(name = "course_class_id", referencedColumnName = "id_class")
+    private CourseClass courseClass;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id", referencedColumnName = "id_group", nullable = false)
-    private Group group;
+    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SubjectTeacherClass> teacherSubjectClasses = new ArrayList<>();
 
     @NotNull
     @Column(name = "created_at", updatable = false)
@@ -44,19 +48,11 @@ public class Subject {
 
     public Subject(final SubjectForm form) {
         this.name = form.getName();
-        this.level = form.getLevel();
-        this.group = form.getGroup();
     }
 
     public void updateSubject(final SubjectForm form) {
         if (form.getName() != null) {
             this.name = form.getName();
-        }
-        if (form.getLevel() != null) {
-            this.level = form.getLevel();
-        }
-        if (form.getGroup() != null) {
-            this.group = form.getGroup();
         }
     }
 

@@ -73,9 +73,9 @@ public class Admin {
         if (form.getEmail() != null) {
             this.email = form.getEmail();
         }
-        if (form.getPassword() != null) {
+        /*if (form.getPassword() != null) {
             this.password = form.getPassword();
-        }
+        }*/
         if (form.getRole() != null) {
             this.role = form.getRole();
         }

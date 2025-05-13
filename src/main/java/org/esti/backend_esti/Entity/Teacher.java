@@ -6,6 +6,8 @@ import lombok.*;
 import org.esti.backend_esti.Form.TeacherForm;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -30,23 +32,20 @@ public class Teacher {
     @Column (name = "phone_number", length = 15)
     private String phoneNumber;
 
+    @NotNull
     @Column (name = "email", length = 100, nullable = false)
     private String email;
 
+    @NotNull
     @Column (name = "password", length = 255, nullable = false)
     private String password;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "level_id", referencedColumnName = "id_level", nullable = false)
-    private Level level;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id", referencedColumnName = "id_group", nullable = false)
-    private Group group;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SubjectTeacherClass> teacherSubjectClasses = new ArrayList<>();
 
     @NotNull
     @Column(name = "created_at", updatable = false)

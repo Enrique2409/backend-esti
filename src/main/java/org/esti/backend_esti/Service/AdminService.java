@@ -1,6 +1,7 @@
 package org.esti.backend_esti.Service;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.esti.backend_esti.DTO.AdminDTO;
@@ -24,13 +25,18 @@ public class AdminService {
         final Admin admin = new Admin(form);
         admin.setPassword(passwordEncoder.encode(form.getPassword()));
         adminRepository.save(admin);
+        admin.setCreatedAt(LocalDateTime.now());
         return AdminDTO.build(admin);
     }
 
     public AdminDTO updateAdmin(final AdminForm form, Long id) throws Exception {
         validateIfAdminExists(id);
         final Admin admin = adminRepository.findById(id).get();
-        admin.setPassword(passwordEncoder.encode(form.getPassword()));
+
+        if (form.getPassword() != null && !form.getPassword().isEmpty()) {
+            String encryptedPassword = passwordEncoder.encode(form.getPassword());
+            admin.setPassword(encryptedPassword);
+        }
         admin.updateAdmin(form);
         adminRepository.save(admin);
         return AdminDTO.build(admin);

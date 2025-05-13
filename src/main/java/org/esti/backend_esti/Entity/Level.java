@@ -9,6 +9,7 @@ import org.esti.backend_esti.Form.LevelForm;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 @Builder
 @Getter
 @Setter
@@ -34,6 +35,10 @@ public class Level {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public Level(Long idLevel) {
+        this.idLevel = idLevel;
+    }
 
     public Level(final LevelForm form) {
         this.level = form.getLevel();

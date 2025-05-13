@@ -41,7 +41,7 @@ public class Grades {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_teacher_id", referencedColumnName = "id_subject_teacher", nullable = false)
-    private SubjectTeacher subjectTeacher;
+    private SubjectTeacherClass subjectTeacher;
 
     @NotNull
     @Column(name = "created_at", updatable = false)

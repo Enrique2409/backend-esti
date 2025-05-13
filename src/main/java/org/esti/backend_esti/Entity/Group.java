@@ -39,6 +39,10 @@ public class Group {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    public Group(Long idGroup) {
+        this.idGroup = idGroup;
+    }
+
     public Group(final GroupForm form) {
         this.groupName = form.getGroupName();
     }

@@ -7,10 +7,11 @@ import lombok.Data;
 import org.esti.backend_esti.Entity.CourseClass;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-public class StudentForm {
+public class StudentForm implements Serializable {
 
     @NotBlank(message = "El nombre es requerido")
     private String name;

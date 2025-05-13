@@ -34,7 +34,7 @@ public class AdminController {
     @PatchMapping("/{adminId}")
     public ResponseEntity updateAdmin (@RequestBody @Valid AdminForm form, @PathVariable("adminId") final Long adminId) throws Exception {
         AdminDTO adminDTO = adminService.updateAdmin(form, adminId);
-        return ResponseEntity.ok().body(adminId);
+        return ResponseEntity.ok().body(adminDTO);
     }
 
     @DeleteMapping("/{adminId}")
