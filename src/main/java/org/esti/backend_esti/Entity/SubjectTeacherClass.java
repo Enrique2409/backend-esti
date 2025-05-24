@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "subject_teacher_class")
 public class SubjectTeacherClass {
-
+//redo
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_subject_teacher")
