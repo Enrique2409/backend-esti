@@ -15,4 +15,7 @@ public class SubjectForm implements Serializable {
     @NotBlank(message = "El nombre de la materia es requerido")
     private String name;
 
+    private String description;
+
+
 } 

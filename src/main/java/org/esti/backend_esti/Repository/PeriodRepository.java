@@ -1,6 +1,6 @@
 package org.esti.backend_esti.Repository;
 
-import org.esti.backend_esti.Entity.Group;
+import org.esti.backend_esti.Entity.Period;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,8 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface GroupRepository extends JpaRepository<Group, Long> {
-
-    @Query("SELECT g FROM Group g WHERE g.deletedAt IS NULL")
-    List<Group> findAllActive();
+public interface PeriodRepository extends JpaRepository<Period, Long> {
+    @Query("SELECT g FROM Period g WHERE g.deletedAt IS NULL")
+    List<Period> findAllActive();
 }

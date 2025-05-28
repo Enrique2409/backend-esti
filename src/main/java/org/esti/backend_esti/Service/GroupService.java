@@ -1,32 +1,33 @@
 package org.esti.backend_esti.Service;
 
-
 import org.esti.backend_esti.DTO.GroupDTO;
-import org.esti.backend_esti.DTO.LevelDTO;
 import org.esti.backend_esti.Entity.Group;
-import org.esti.backend_esti.Entity.Level;
+import org.esti.backend_esti.Entity.Period;
 import org.esti.backend_esti.Form.GroupForm;
-import org.esti.backend_esti.Form.LevelForm;
 import org.esti.backend_esti.Repository.GroupRepository;
+import org.esti.backend_esti.Repository.PeriodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class GroupService {
 
-    @Autowired
-    private GroupRepository groupRepository;
+    private final GroupRepository groupRepository;
+    private final PeriodRepository periodRepository;
 
-    public GroupService(GroupRepository groupRepository) {
+    @Autowired
+    public GroupService(GroupRepository groupRepository, PeriodRepository periodRepository) {
         this.groupRepository = groupRepository;
+        this.periodRepository = periodRepository;
     }
 
-    public GroupDTO createGroup(final GroupForm form) {
-        final Group group = new Group(form);
-        group.setGroupName(form.getGroupName());
+    public GroupDTO createGroup(final GroupForm form) throws Exception {
+        Period period = periodRepository.findById(form.getPeriodId())
+                .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
+
+        final Group group = new Group(form, period);
         groupRepository.save(group);
         return GroupDTO.build(group);
     }
@@ -34,7 +35,11 @@ public class GroupService {
     public GroupDTO updateGroup(final GroupForm form, Long idGroup) throws Exception {
         validateIfGroupExists(idGroup);
         final Group group = groupRepository.findById(idGroup).get();
-        group.updateGroup(form);
+
+        Period period = periodRepository.findById(form.getPeriodId())
+                .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
+
+        group.updateGroup(form, period);
         groupRepository.save(group);
         return GroupDTO.build(group);
     }
@@ -52,7 +57,7 @@ public class GroupService {
         return GroupDTO.build(group);
     }
 
-    public List<GroupDTO> getAllGroups()throws Exception {
+    public List<GroupDTO> getAllGroups() {
         final List<Group> groups = groupRepository.findAll();
         return groups.stream().map(GroupDTO::build).toList();
     }
@@ -71,7 +76,7 @@ public class GroupService {
 
     public void validateIfGroupExists(final Long idGroup) throws Exception {
         if (!groupRepository.existsById(idGroup)) {
-            throw new Exception("Service not found");
+            throw new Exception("Group not found with id: " + idGroup);
         }
     }
 }

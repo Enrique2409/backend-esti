@@ -1,9 +1,7 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
-import org.esti.backend_esti.DTO.GroupDTO;
 import org.esti.backend_esti.DTO.SubjectDTO;
-import org.esti.backend_esti.Entity.Group;
 import org.esti.backend_esti.Entity.Subject;
 import org.esti.backend_esti.Form.SubjectForm;
 import org.esti.backend_esti.Service.SubjectService;
@@ -39,7 +37,7 @@ public class SubjectController {
     }
 
     @DeleteMapping("/{subjectId}")
-    public ResponseEntity<Void> deleteSubjectLogically(@PathVariable Long subjectId) throws Exception{
+    public ResponseEntity<Void> deleteSubjectLogically(@PathVariable Long subjectId) throws Exception {
         subjectService.deleteSubjectLogically(subjectId);
         return ResponseEntity.noContent().build();
     }
@@ -51,7 +49,7 @@ public class SubjectController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<SubjectDTO>> getAllSubjects() throws Exception {
+    public ResponseEntity<List<SubjectDTO>> getAllSubjects() {
         List<SubjectDTO> subjectsDTO = subjectService.getAllSubjects();
         return ResponseEntity.ok().body(subjectsDTO);
     }
@@ -62,4 +60,4 @@ public class SubjectController {
         List<SubjectDTO> activeSubjectDTOs = activeSubjects.stream().map(SubjectDTO::build).toList();
         return ResponseEntity.ok(activeSubjectDTOs);
     }
-} 
+}

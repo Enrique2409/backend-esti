@@ -4,8 +4,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import org.esti.backend_esti.Entity.Group;
-import org.esti.backend_esti.Entity.Level;
 import org.esti.backend_esti.Entity.Role;
 
 import java.io.Serializable;

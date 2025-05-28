@@ -44,9 +44,6 @@ public class Teacher {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SubjectTeacherClass> teacherSubjectClasses = new ArrayList<>();
-
     @NotNull
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

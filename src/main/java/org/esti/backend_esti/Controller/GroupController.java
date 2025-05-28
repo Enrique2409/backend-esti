@@ -1,6 +1,5 @@
 package org.esti.backend_esti.Controller;
 
-
 import jakarta.validation.Valid;
 import org.esti.backend_esti.DTO.GroupDTO;
 import org.esti.backend_esti.Entity.Group;
@@ -16,47 +15,47 @@ import java.util.List;
 @RequestMapping("/esti/group")
 public class GroupController {
 
-    @Autowired
-    private GroupService groupService;
+    private final GroupService groupService;
 
+    @Autowired
     public GroupController(GroupService groupService) {
         this.groupService = groupService;
     }
 
     @PostMapping("/create-group")
-    public ResponseEntity createGroup(@RequestBody @Valid GroupForm form) {
+    public ResponseEntity<GroupDTO> createGroup(@RequestBody @Valid GroupForm form) throws Exception {
         GroupDTO groupDTO = groupService.createGroup(form);
-        return ResponseEntity.ok().body(groupDTO);
+        return ResponseEntity.ok(groupDTO);
     }
 
     @PatchMapping("/{groupId}")
-    public ResponseEntity updateGroup (@RequestBody @Valid GroupForm form, @PathVariable("groupId") final Long groupId) throws Exception {
+    public ResponseEntity<GroupDTO> updateGroup(@RequestBody @Valid GroupForm form, @PathVariable("groupId") final Long groupId) throws Exception {
         GroupDTO groupDTO = groupService.updateGroup(form, groupId);
-        return ResponseEntity.ok().body(groupId);
+        return ResponseEntity.ok(groupDTO);
     }
 
     @DeleteMapping("/{groupId}/hard")
-    public ResponseEntity deleteGroup(@PathVariable("groupId") final Long groupId) throws Exception {
+    public ResponseEntity<Void> deleteGroup(@PathVariable("groupId") final Long groupId) throws Exception {
         groupService.deleteGroup(groupId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<Void> deleteGroupLogically(@PathVariable Long groupId) throws Exception{
+    public ResponseEntity<Void> deleteGroupLogically(@PathVariable Long groupId) throws Exception {
         groupService.deleteGroupLogically(groupId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{groupId}")
-    public ResponseEntity findById(@PathVariable("groupId") final Long groupId) throws Exception {
+    public ResponseEntity<GroupDTO> findById(@PathVariable("groupId") final Long groupId) throws Exception {
         GroupDTO groupDTO = groupService.findById(groupId);
-        return ResponseEntity.ok().body(groupId);
+        return ResponseEntity.ok(groupDTO);
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity getAllGroups() throws Exception {
+    public ResponseEntity<List<GroupDTO>> getAllGroups() {
         List<GroupDTO> groupsDTO = groupService.getAllGroups();
-        return ResponseEntity.ok().body(groupsDTO);
+        return ResponseEntity.ok(groupsDTO);
     }
 
     @GetMapping("/active")

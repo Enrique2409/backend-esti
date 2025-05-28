@@ -2,13 +2,11 @@ package org.esti.backend_esti.Service;
 
 import org.esti.backend_esti.DTO.SubjectDTO;
 import org.esti.backend_esti.Entity.Subject;
-import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.SubjectForm;
 import org.esti.backend_esti.Repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,7 +18,6 @@ public class SubjectService {
     public SubjectDTO createSubject(final SubjectForm form) {
         final Subject subject = new Subject(form);
         subjectRepository.save(subject);
-        subject.setCreatedAt(LocalDateTime.now());
         return SubjectDTO.build(subject);
     }
 
@@ -40,12 +37,12 @@ public class SubjectService {
     public SubjectDTO findById(Long idSubject) throws Exception {
         validateIfSubjectExists(idSubject);
         final Subject subject = subjectRepository.findById(idSubject).orElseThrow(() ->
-            new Exception("Subject not found with id: " + idSubject)
+                new Exception("Subject not found with id: " + idSubject)
         );
         return SubjectDTO.build(subject);
     }
 
-    public List<SubjectDTO> getAllSubjects() throws Exception {
+    public List<SubjectDTO> getAllSubjects() {
         final List<Subject> subjects = subjectRepository.findAll();
         return subjects.stream().map(SubjectDTO::build).toList();
     }
@@ -67,4 +64,4 @@ public class SubjectService {
             throw new Exception("Subject Not Found");
         }
     }
-} 
+}

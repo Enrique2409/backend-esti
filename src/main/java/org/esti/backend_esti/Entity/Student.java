@@ -44,12 +44,6 @@ public class Student {
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "class_id", referencedColumnName = "id_class", nullable = false)
-    private CourseClass courseClass;
-
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SubjectTeacherClass> subjectTeacherClasses;
 
     @NotNull
     @Column(name = "created_at", updatable = false)
@@ -71,7 +65,6 @@ public class Student {
         this.curp = form.getCurp();
         this.birthDate = form.getBirthDate();
         this.phoneNumber = form.getPhoneNumber();
-        this.courseClass = form.getCourseClass();
     }
 
     public void updateStudent(final StudentForm form) {
@@ -95,9 +88,6 @@ public class Student {
         }
         if (form.getPhoneNumber() != null) {
             this.phoneNumber = form.getPhoneNumber();
-        }
-        if (form.getCourseClass() != null) {
-            this.courseClass = form.getCourseClass();
         }
     }
 

@@ -1,6 +1,5 @@
 package org.esti.backend_esti.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -8,8 +7,6 @@ import lombok.*;
 import org.esti.backend_esti.Form.SubjectForm;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Builder
@@ -29,12 +26,8 @@ public class Subject {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_class_id", referencedColumnName = "id_class")
-    private CourseClass courseClass;
-
-    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SubjectTeacherClass> teacherSubjectClasses = new ArrayList<>();
+    @Column(name = "description", length = 255)
+    private String description;
 
     @NotNull
     @Column(name = "created_at", updatable = false)
@@ -48,11 +41,15 @@ public class Subject {
 
     public Subject(final SubjectForm form) {
         this.name = form.getName();
+        this.description = form.getDescription();
     }
 
     public void updateSubject(final SubjectForm form) {
         if (form.getName() != null) {
             this.name = form.getName();
+        }
+        if (form.getDescription() != null) {
+            this.description = form.getDescription();
         }
     }
 

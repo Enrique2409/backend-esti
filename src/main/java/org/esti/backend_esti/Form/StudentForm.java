@@ -29,6 +29,4 @@ public class StudentForm implements Serializable {
     private String curp;
 
     private LocalDate birthDate;
-
-    private CourseClass courseClass;
 } 

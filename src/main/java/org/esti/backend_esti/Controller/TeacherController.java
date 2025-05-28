@@ -1,9 +1,7 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
-import org.esti.backend_esti.DTO.GroupDTO;
 import org.esti.backend_esti.DTO.TeacherDTO;
-import org.esti.backend_esti.Entity.Group;
 import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.TeacherForm;
 import org.esti.backend_esti.Service.TeacherService;
