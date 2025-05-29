@@ -31,6 +31,7 @@ public class Group {
     @Column(name = "grade", nullable = false)
     private Integer grade;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_period", nullable = false)
     private Period period;
@@ -49,7 +50,7 @@ public class Group {
         this.idGroup = idGroup;
     }
 
-    public Group(final GroupForm form, final Period period) {
+    public Group(final GroupForm form, Period period) {
         this.groupName = form.getGroupName();
         this.grade = form.getGrade();
         this.period = period;
