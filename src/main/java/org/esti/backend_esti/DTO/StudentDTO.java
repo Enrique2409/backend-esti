@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.esti.backend_esti.Entity.Admin;
-import org.esti.backend_esti.Entity.CourseClass;
-import org.esti.backend_esti.Entity.Level;
 import org.esti.backend_esti.Entity.Student;
 
 import java.time.LocalDate;

@@ -55,6 +55,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/esti/student/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/esti/student/**").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/esti/period/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/period/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/period/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/period    /**").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/esti/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/esti/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/esti/**").permitAll()

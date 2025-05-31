@@ -1,10 +1,8 @@
 package org.esti.backend_esti.Form;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import org.esti.backend_esti.Entity.CourseClass;
 
 
 import java.io.Serializable;

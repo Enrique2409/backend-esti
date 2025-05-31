@@ -1,11 +1,7 @@
 package org.esti.backend_esti.Form;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.esti.backend_esti.Entity.Group;
-import org.esti.backend_esti.Entity.Level;
 
 import java.io.Serializable;
 
