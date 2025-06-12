@@ -24,7 +24,7 @@ public class Admin {
     private String name;
 
     @Column (name = "last_name", length = 100, nullable = false)
-    private String lastName;
+    private String  relastName;
 
     @Column (name = "phone_number", length = 15)
     private String phoneNumber;
