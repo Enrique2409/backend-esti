@@ -2,7 +2,7 @@ package org.esti.backend_esti.DTO;
 
 import lombok.Builder;
 import lombok.Data;
-import org.esti.backend_esti.Entity.Cardex;
+import org.esti.backend_esti.Entity.*;
 
 import java.time.LocalDateTime;
 
@@ -12,13 +12,18 @@ public class CardexDTO {
 
     private Long idCardex;
 
-    private Long groupId;
+    private String groupName;
+    private Integer grade;
+    private String period;
 
-    private Long teacherId;
+    private String teacherName;
+    private String teacherLastName;
 
-    private Long studentId;
+    private String studentName;
+    private String studentLastNamePaternal;
+    private String studentLastNameMaternal;
 
-    private Long subjectId;
+    private String subjectName;
 
     private Integer firstPartial;
 
@@ -37,10 +42,15 @@ public class CardexDTO {
     public static CardexDTO build(final Cardex cardex) {
         return CardexDTO.builder()
                 .idCardex(cardex.getIdCardex())
-                .groupId(cardex.getGroup() != null ? cardex.getGroup().getIdGroup() : null)
-                .teacherId(cardex.getTeacher() != null ? cardex.getTeacher().getIdTeacher() : null)
-                .studentId(cardex.getStudent() != null ? cardex.getStudent().getIdStudent() : null)
-                .subjectId(cardex.getSubject() != null ? cardex.getSubject().getIdSubject() : null)
+                .groupName(cardex.getGroup().getGroupName())
+                .grade(cardex.getGroup().getGrade())
+                .period(cardex.getGroup().getPeriod().getCve())
+                .teacherName(cardex.getTeacher().getName())
+                .teacherLastName(cardex.getTeacher().getLastName())
+                .studentName(cardex.getStudent().getName())
+                .studentLastNamePaternal(cardex.getStudent().getLastNamePaternal())
+                .studentLastNameMaternal(cardex.getStudent().getLastNameMaternal())
+                .subjectName(cardex.getSubject().getName())
                 .firstPartial(cardex.getFirstPartial())
                 .secondPartial(cardex.getSecondPartial())
                 .thirdPartial(cardex.getThirdPartial())

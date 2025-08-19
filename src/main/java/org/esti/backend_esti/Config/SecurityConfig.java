@@ -60,6 +60,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/esti/period/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/esti/period    /**").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/esti/cardex/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/cardex/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/cardex/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/cardex/**").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/esti/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/esti/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/esti/**").permitAll()

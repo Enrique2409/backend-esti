@@ -32,7 +32,7 @@ public class Group {
     private Integer grade;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_period", nullable = false)
     private Period period;
 
