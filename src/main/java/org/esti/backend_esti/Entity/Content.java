@@ -45,6 +45,7 @@ public class Content {
 
     private LocalDateTime deletedAt; // Fecha de eliminación lógica (nulo si no está eliminada)
 
+
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
