@@ -2,10 +2,15 @@ package org.esti.backend_esti.Service;
 
 
 import org.esti.backend_esti.DTO.ReportDTO;
+import org.esti.backend_esti.DTO.StudentDTO;
 import org.esti.backend_esti.Entity.Report;
+import org.esti.backend_esti.Entity.Student;
 import org.esti.backend_esti.Form.ReportForm;
 import org.esti.backend_esti.Repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +51,13 @@ public class ReportService {
     public List<ReportDTO> getAllReports()throws  Exception {
         final  List<Report> reports = reportRepository.findAll();
         return  reports.stream().map(ReportDTO::build).toList();
+    }
+
+
+    public Page<ReportDTO> getReports(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Report> reportsPage = reportRepository.findAll(pageable);
+        return reportsPage.map(ReportDTO::build);
     }
 
     public List<Report> getAllActiveReports() {

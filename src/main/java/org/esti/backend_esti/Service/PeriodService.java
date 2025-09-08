@@ -1,10 +1,15 @@
 package org.esti.backend_esti.Service;
 
 import org.esti.backend_esti.DTO.PeriodDTO;
+import org.esti.backend_esti.DTO.ReportDTO;
 import org.esti.backend_esti.Entity.Period;
+import org.esti.backend_esti.Entity.Report;
 import org.esti.backend_esti.Form.PeriodForm;
 import org.esti.backend_esti.Repository.PeriodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,6 +52,12 @@ public class PeriodService {
     public List<PeriodDTO> getAllPeriods() {
         final List<Period> periods = periodRepository.findAll();
         return periods.stream().map(PeriodDTO::build).toList();
+    }
+
+    public Page<PeriodDTO> getPeriods(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Period> periodsPage = periodRepository.findAll(pageable);
+        return periodsPage.map(PeriodDTO::build);
     }
 
     public List<Period> getAllActivePeriods() {

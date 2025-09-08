@@ -1,10 +1,15 @@
 package org.esti.backend_esti.Service;
 
+import org.esti.backend_esti.DTO.StudentDTO;
 import org.esti.backend_esti.DTO.SubjectDTO;
+import org.esti.backend_esti.Entity.Student;
 import org.esti.backend_esti.Entity.Subject;
 import org.esti.backend_esti.Form.SubjectForm;
 import org.esti.backend_esti.Repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +50,12 @@ public class SubjectService {
     public List<SubjectDTO> getAllSubjects() {
         final List<Subject> subjects = subjectRepository.findAll();
         return subjects.stream().map(SubjectDTO::build).toList();
+    }
+
+    public Page<SubjectDTO> getSubjects(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Subject> subjectsPage = subjectRepository.findAll(pageable);
+        return subjectsPage.map(SubjectDTO::build);
     }
 
     public List<Subject> getAllActiveSubjects() {

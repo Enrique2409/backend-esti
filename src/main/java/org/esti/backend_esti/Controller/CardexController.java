@@ -1,10 +1,12 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
+import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.DTO.CardexDTO;
 import org.esti.backend_esti.Form.CardexForm;
 import org.esti.backend_esti.Service.CardexService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,5 +81,14 @@ public class CardexController {
     public ResponseEntity<List<CardexDTO>> getBySubject(@PathVariable("subjectId") Long subjectId) {
         List<CardexDTO> filtered = cardexService.getBySubject(subjectId);
         return ResponseEntity.ok(filtered);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Page<CardexDTO>> getCardexs(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        Page<CardexDTO> cardexsPage = cardexService.getCardexs(page, size);
+        return ResponseEntity.ok(cardexsPage);
     }
 }

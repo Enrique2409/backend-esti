@@ -6,15 +6,9 @@ import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.Form.AdminForm;
 import org.esti.backend_esti.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
@@ -48,10 +42,21 @@ public class AdminController {
         AdminDTO adminDTO = adminService.findById(adminId);
         return ResponseEntity.ok().body(adminId);
     }
-
+/*
     @GetMapping("/getAll")
     public ResponseEntity getAllAdmins() throws Exception {
         List<AdminDTO> adminsDTO = adminService.getAllAdmins();
         return ResponseEntity.ok().body(adminsDTO);
+    }*/
+
+    @GetMapping("/")
+    public ResponseEntity<Page<AdminDTO>> getAdmins(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<AdminDTO> adminsPage = adminService.getAdmins(page, size);
+        return ResponseEntity.ok(adminsPage);
     }
+
+
 }

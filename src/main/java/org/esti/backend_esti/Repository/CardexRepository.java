@@ -1,6 +1,9 @@
 package org.esti.backend_esti.Repository;
 
+import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Entity.Cardex;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -28,4 +31,7 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
     // Filtrar por materia
     @Query("SELECT c FROM Cardex c WHERE c.subject.id = :subjectId AND c.deletedAt IS NULL")
     List<Cardex> findBySubjectId(Long subjectId);
+
+
+    Page<Cardex> findAll(Pageable pageable);
 }

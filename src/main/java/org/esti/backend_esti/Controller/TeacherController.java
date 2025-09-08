@@ -1,11 +1,13 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
+import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.DTO.TeacherDTO;
 import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.TeacherForm;
 import org.esti.backend_esti.Service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +54,15 @@ public class TeacherController {
     public ResponseEntity<List<TeacherDTO>> getAllTeachers() throws Exception {
         List<TeacherDTO> teachersDTO = teacherService.getAllTeachers();
         return ResponseEntity.ok().body(teachersDTO);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Page<TeacherDTO>> getTeachers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        Page<TeacherDTO> teachersPage = teacherService.getTeachers(page, size);
+        return ResponseEntity.ok(teachersPage);
     }
 
     @GetMapping("/active")

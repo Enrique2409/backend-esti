@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/esti/teacher/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/esti/student/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/esti/student/").permitAll()
                         .requestMatchers(HttpMethod.POST, "/esti/student/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/esti/student/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/esti/student/**").permitAll()
@@ -58,7 +59,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/esti/period/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/esti/period/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/esti/period/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/esti/period    /**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/period/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/esti/cardex/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/esti/cardex/**").permitAll()

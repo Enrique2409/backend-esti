@@ -3,10 +3,12 @@ package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
 import org.esti.backend_esti.DTO.ReportDTO;
+import org.esti.backend_esti.DTO.StudentDTO;
 import org.esti.backend_esti.Entity.Report;
 import org.esti.backend_esti.Form.ReportForm;
 import org.esti.backend_esti.Service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +59,15 @@ public class ReportController {
     public ResponseEntity getAllReports() throws Exception {
         List<ReportDTO> reportsDTO = reportService.getAllReports();
         return ResponseEntity.ok().body(reportsDTO);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Page<ReportDTO>> getReports(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        Page<ReportDTO> reportsPage = reportService.getReports(page, size);
+        return ResponseEntity.ok(reportsPage);
     }
 
     @GetMapping("/active")

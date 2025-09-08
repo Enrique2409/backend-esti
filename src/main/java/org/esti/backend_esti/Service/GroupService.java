@@ -1,12 +1,16 @@
 package org.esti.backend_esti.Service;
 
 import org.esti.backend_esti.DTO.GroupDTO;
+import org.esti.backend_esti.DTO.PeriodDTO;
 import org.esti.backend_esti.Entity.Group;
 import org.esti.backend_esti.Entity.Period;
 import org.esti.backend_esti.Form.GroupForm;
 import org.esti.backend_esti.Repository.GroupRepository;
 import org.esti.backend_esti.Repository.PeriodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,6 +64,12 @@ public class GroupService {
     public List<GroupDTO> getAllGroups() {
         final List<Group> groups = groupRepository.findAll();
         return groups.stream().map(GroupDTO::build).toList();
+    }
+
+    public Page<GroupDTO> getGroups(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Group> groupsPage = groupRepository.findAll(pageable);
+        return groupsPage.map(GroupDTO::build);
     }
 
     public List<Group> getAllActiveGroups() {
