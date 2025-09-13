@@ -12,4 +12,10 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s WHERE s.deletedAt IS NULL")
     List<Student> findAllActive();
+
+    List<Student> findByGroupIdGroup(Long groupId);
+
+    List<Student> findByGroupGroupName(String groupName);
+
+    List<Student> findByGroupGrade(Integer grade);
 }

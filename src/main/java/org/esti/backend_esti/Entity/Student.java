@@ -44,6 +44,9 @@ public class Student {
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "id_group")
+    private Group group;
 
     @NotNull
     @Column(name = "created_at", updatable = false)
@@ -55,7 +58,7 @@ public class Student {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    public Student(final StudentForm form) {
+    public Student(final StudentForm form, final Group group) {
         if (form == null) {
             throw new IllegalArgumentException("El formulario de estudiante no puede ser nulo.");
         }
@@ -65,6 +68,7 @@ public class Student {
         this.curp = form.getCurp();
         this.birthDate = form.getBirthDate();
         this.phoneNumber = form.getPhoneNumber();
+        this.group = group;
     }
 
     public void updateStudent(final StudentForm form) {
