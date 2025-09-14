@@ -63,6 +63,12 @@ public class StudentService {
         return studentsPage.map(StudentDTO::build);
     }
 
+    public Page<StudentDTO> searchStudents(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> studentsPage = studentRepository.searchStudents(keyword, pageable);
+        return studentsPage.map(StudentDTO::build);
+    }
+
     public List<Student> getAllActiveStudents() {
         return studentRepository.findAllActive();
     }

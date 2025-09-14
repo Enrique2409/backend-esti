@@ -18,4 +18,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s WHERE s.deletedAt IS NULL")
     List<Student> findAllActive();
     Page<Student> findAll(Pageable pageable);
+
+    @Query("SELECT s FROM Student s " +
+            "WHERE s.deletedAt IS NULL " +
+            "AND (" +
+            "LOWER(s.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(s.lastNamePaternal) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(s.lastNameMaternal) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(s.curp) LIKE LOWER(CONCAT('%', :keyword, '%'))" +
+            ")")
+    Page<Student> searchStudents(String keyword, Pageable pageable);
 }

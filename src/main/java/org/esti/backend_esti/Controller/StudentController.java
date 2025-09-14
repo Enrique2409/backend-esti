@@ -67,6 +67,14 @@ public class StudentController {
         return ResponseEntity.ok(studentsPage);
     }
 
+    @GetMapping("/students/search")
+    public Page<StudentDTO> searchStudents(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return studentService.searchStudents(keyword, page, size);
+    }
+
 
 
     @GetMapping("/active")
