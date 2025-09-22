@@ -22,6 +22,7 @@ public class TeacherSubjectGroupDTO {
 
     public static TeacherSubjectGroupDTO build(TeacherSubjectGroup teacherSubjectGroup) {
         return TeacherSubjectGroupDTO.builder()
+                .idTeacherSubjectGroup(teacherSubjectGroup.getIdTeacherSubjectGroup())
                 .groupName(teacherSubjectGroup.getGroup().getGroupName())
                 .grade(teacherSubjectGroup.getGroup().getGrade())
                 .period(teacherSubjectGroup.getGroup().getPeriod().getCve())
