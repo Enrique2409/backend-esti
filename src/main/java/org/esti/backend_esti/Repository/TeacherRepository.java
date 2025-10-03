@@ -17,4 +17,12 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     List<Teacher> findAllActive();
 
     Page<Teacher> findAll(Pageable pageable);
+
+    @Query("SELECT t FROM Teacher t " +
+            "WHERE t.deletedAt IS NULL " +
+            "AND (" +
+            "LOWER(t.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(t.lastName) LIKE LOWER(CONCAT('%', :keyword, '%'))" +
+            ")")
+    Page<Teacher> searchTeachers(String keyword, Pageable pageable);
 } 

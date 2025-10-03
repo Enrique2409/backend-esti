@@ -71,4 +71,12 @@ public class TeacherController {
         List<TeacherDTO> activeTeacherDTOs = activeTeachers.stream().map(TeacherDTO::build).toList();
         return ResponseEntity.ok(activeTeacherDTOs);
     }
+
+    @GetMapping("/search")
+    public Page<TeacherDTO> searchTeachers(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return teacherService.searchTeachers(keyword, page, size);
+    }
 } 

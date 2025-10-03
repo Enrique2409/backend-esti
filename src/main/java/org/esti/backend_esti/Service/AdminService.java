@@ -68,6 +68,12 @@ public class AdminService {
         return adminsPage.map(AdminDTO::build);
     }
 
+    public Page<AdminDTO> searchAdmins(String keyword, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Admin> adminsPage = adminRepository.searchAdmins(keyword, pageable);
+        return adminsPage.map(AdminDTO::build);
+    }
+
 
 
     public void validateIfAdminExists(Long id) throws Exception {

@@ -74,6 +74,8 @@ public class TeacherService {
         return teacherRepository.findAllActive();
     }
 
+
+
     public void deleteTeacherLogically(Long idTeacher) throws Exception {
         Teacher existingTeacher = teacherRepository.findById(idTeacher).orElseThrow(() ->
                 new Exception("Group not found with id: " + idTeacher)
@@ -86,5 +88,12 @@ public class TeacherService {
         if (!teacherRepository.existsById(idTeacher)) {
             throw new Exception("Teacher Not Found");
         }
+    }
+
+
+    public Page<TeacherDTO> searchTeachers(String keyword, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Teacher> teachersPage = teacherRepository.searchTeachers(keyword, pageable);
+        return teachersPage.map(TeacherDTO::build);
     }
 } 

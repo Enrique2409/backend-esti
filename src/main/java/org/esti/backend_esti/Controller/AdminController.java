@@ -49,6 +49,14 @@ public class AdminController {
         return ResponseEntity.ok().body(adminsDTO);
     }*/
 
+    @GetMapping("/search")
+    public Page<AdminDTO> searchAdmins(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return adminService.searchAdmins(keyword, page, size);
+    }
+
     @GetMapping("/")
     public ResponseEntity<Page<AdminDTO>> getAdmins(
             @RequestParam(defaultValue = "0") int page,
