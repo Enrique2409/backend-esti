@@ -58,6 +58,12 @@ public class SubjectService {
         return subjectsPage.map(SubjectDTO::build);
     }
 
+    public Page<SubjectDTO> searchSubjects(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Subject> subjectsPage = subjectRepository.searchSubjects(keyword, pageable);
+        return subjectsPage.map(SubjectDTO::build);
+    }
+
     public List<Subject> getAllActiveSubjects() {
         return subjectRepository.findAllActive();
     }

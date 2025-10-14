@@ -17,6 +17,9 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
     @Query("SELECT s FROM Subject s WHERE s.deletedAt IS NULL")
     List<Subject> findAllActive();
 
-    @Query("SELECT s FROM Subject s WHERE s.deletedAt IS NULL")
-    Page<Subject> findAll(Pageable pageable);
+    @Query("SELECT s FROM Subject s " +
+            "WHERE s.deletedAt IS NULL " +
+            "AND LOWER(s.name) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    Page<Subject> searchSubjects(String keyword, Pageable pageable);
+
 } 

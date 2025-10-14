@@ -65,6 +65,15 @@ public class SubjectController {
         return ResponseEntity.ok(subjectsPage);
     }
 
+    @GetMapping("/search")
+    public Page<SubjectDTO> searchSubjects(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return subjectService.searchSubjects(keyword, page, size);
+    }
+
+
     @GetMapping("/active")
     public ResponseEntity<List<SubjectDTO>> getAllActiveSubjects() {
         List<Subject> activeSubjects = subjectService.getAllActiveSubjects();

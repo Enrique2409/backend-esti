@@ -52,9 +52,13 @@ public class StudentService {
     public StudentDTO findById(Long idStudent) throws Exception {
         validateIfStudentExists(idStudent);
         final Student student = studentRepository.findById(idStudent).orElseThrow(() ->
-            new Exception("Student not found with id: " + idStudent)
+                new Exception("Student not found with id: " + idStudent)
         );
         return StudentDTO.build(student);
+    }
+
+    public List<Student> getStudentsByGroup(Long groupId) throws Exception {
+        return studentRepository.findByGroupIdGroup(groupId);
     }
 
     /*
