@@ -94,4 +94,5 @@ public class CardexController {
     public ResponseEntity<List<CardexDTO>> getByTeacherAndGroup(@PathVariable("teacherId") Long teacherId, @PathVariable("groupId") Long groupId) {
         return ResponseEntity.ok(cardexService.getByTeacherAndGroup(teacherId, groupId));
     }
+    //fixes
 }
