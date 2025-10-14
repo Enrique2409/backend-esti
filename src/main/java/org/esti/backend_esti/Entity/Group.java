@@ -31,9 +31,8 @@ public class Group {
     @Column(name = "grade", nullable = false)
     private Integer grade;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_period", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_period")
     private Period period;
 
     @NotNull

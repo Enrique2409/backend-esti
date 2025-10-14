@@ -6,13 +6,9 @@ import java.io.Serializable;
 @Data
 public class CardexForm implements Serializable{
 
-    private Long groupId;
-
-    private Long teacherId;
-
     private Long studentId;
 
-    private Long subjectId;
+    private Long teacherSubjectGroupId;
 
     private Integer firstPartial;
 

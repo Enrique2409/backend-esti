@@ -26,23 +26,13 @@ public class Cardex {
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_group", nullable = false)
-    private Group group;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_teacher", nullable = false)
-    private Teacher teacher;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_student", nullable = false)
     private Student student;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_subject", nullable = false)
-    private Subject subject;
+    @JoinColumn(name = "id_teacher_subject_group", nullable = false)
+    private TeacherSubjectGroup teacherSubjectGroup;
 
     @Column(name="first_partial")
     private Integer firstPartial;
@@ -54,7 +44,7 @@ public class Cardex {
     private Integer thirdPartial;
 
     @Column(name="final_grade")
-    private Integer final_grade;
+    private Integer finalGrade;
 
     @NotNull
     @Column(name = "created_at", updatable = false)
@@ -68,26 +58,22 @@ public class Cardex {
 
     public Cardex (Long idCardex) { this.idCardex = idCardex; }
 
-    public Cardex(final CardexForm form, final Group group, final Teacher teacher, final Student student, final Subject subject) {
-        this.group = group;
-        this.teacher = teacher;
+    public Cardex(final CardexForm form, final Student student, final TeacherSubjectGroup teacherSubjectGroup) {
         this.student = student;
-        this.subject = subject;
+        this.teacherSubjectGroup = teacherSubjectGroup;
         this.firstPartial = form.getFirstPartial();
         this.secondPartial = form.getSecondPartial();
         this.thirdPartial = form.getThirdPartial();
-        this.final_grade = form.getFinalGrade();
+        this.finalGrade = form.getFinalGrade();
     }
 
-    public void updateFromForm(final CardexForm form, final Group group, final Teacher teacher, final Student student, final Subject subject) {
-        this.group = group;
-        this.teacher = teacher;
+    public void updateFromForm(final CardexForm form, final Student student, final TeacherSubjectGroup teacherSubjectGroup) {
         this.student = student;
-        this.subject = subject;
+        this.teacherSubjectGroup = teacherSubjectGroup;
         this.firstPartial = form.getFirstPartial();
         this.secondPartial = form.getSecondPartial();
         this.thirdPartial = form.getThirdPartial();
-        this.final_grade = form.getFinalGrade();
+        this.finalGrade = form.getFinalGrade();
     }
 
     @PrePersist

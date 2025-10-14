@@ -7,44 +7,37 @@ import org.esti.backend_esti.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class CardexService {
 
     private final CardexRepository cardexRepository;
-    private final GroupRepository groupRepository;
-    private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
-    private final SubjectRepository subjectRepository;
+    private final TeacherSubjectGroupRepository teacherSubjectGroupRepository;
 
     @Autowired
     public CardexService(
             CardexRepository cardexRepository,
-            GroupRepository groupRepository,
-            TeacherRepository teacherRepository,
             StudentRepository studentRepository,
-            SubjectRepository subjectRepository
+            TeacherSubjectGroupRepository teacherSubjectGroupRepository
     ) {
         this.cardexRepository = cardexRepository;
-        this.groupRepository = groupRepository;
-        this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
-        this.subjectRepository = subjectRepository;
+        this.teacherSubjectGroupRepository = teacherSubjectGroupRepository;
     }
 
+
     public CardexDTO createCardex(CardexForm form) throws Exception {
-        Group group = groupRepository.findById(form.getGroupId())
-                .orElseThrow(() -> new Exception("Group not found with id: " + form.getGroupId()));
-        Teacher teacher = teacherRepository.findById(form.getTeacherId())
-                .orElseThrow(() -> new Exception("Teacher not found with id: " + form.getTeacherId()));
         Student student = studentRepository.findById(form.getStudentId())
                 .orElseThrow(() -> new Exception("Student not found with id: " + form.getStudentId()));
-        Subject subject = subjectRepository.findById(form.getSubjectId())
-                .orElseThrow(() -> new Exception("Subject not found with id: " + form.getSubjectId()));
+        TeacherSubjectGroup teacherSubjectGroup = teacherSubjectGroupRepository.findById(form.getTeacherSubjectGroupId())
+                .orElseThrow(() -> new Exception("TeacherSubjectGroup not found with id: " + form.getTeacherSubjectGroupId()));
 
-        Cardex cardex = new Cardex(form, group, teacher, student, subject);
+        Cardex cardex = new Cardex(form, student, teacherSubjectGroup);
         cardexRepository.save(cardex);
+        cardex.setCreatedAt(LocalDateTime.now());
         return CardexDTO.build(cardex);
     }
 
@@ -52,17 +45,14 @@ public class CardexService {
         validateIfCardexExists(idCardex);
         Cardex cardex = cardexRepository.findById(idCardex).get();
 
-        Group group = groupRepository.findById(form.getGroupId())
-                .orElseThrow(() -> new Exception("Group not found with id: " + form.getGroupId()));
-        Teacher teacher = teacherRepository.findById(form.getTeacherId())
-                .orElseThrow(() -> new Exception("Teacher not found with id: " + form.getTeacherId()));
         Student student = studentRepository.findById(form.getStudentId())
                 .orElseThrow(() -> new Exception("Student not found with id: " + form.getStudentId()));
-        Subject subject = subjectRepository.findById(form.getSubjectId())
-                .orElseThrow(() -> new Exception("Subject not found with id: " + form.getSubjectId()));
+        TeacherSubjectGroup teacherSubjectGroup = teacherSubjectGroupRepository.findById(form.getTeacherSubjectGroupId())
+                .orElseThrow(() -> new Exception("TeacherSubjectGroup not found with id: " + form.getTeacherSubjectGroupId()));
 
-        cardex.updateFromForm(form, group, teacher, student, subject);
+        cardex.updateFromForm(form, student, teacherSubjectGroup);
         cardexRepository.save(cardex);
+        cardex.setUpdatedAt(LocalDateTime.now());
         return CardexDTO.build(cardex);
     }
 
@@ -115,6 +105,13 @@ public class CardexService {
 
     public List<CardexDTO> getBySubject(Long subjectId) {
         return cardexRepository.findBySubjectId(subjectId)
+                .stream()
+                .map(CardexDTO::build)
+                .toList();
+    }
+
+    public List<CardexDTO> getByTeacherAndGroup(Long teacherId, Long groupId) {
+        return cardexRepository.findByTeacherAndGroup(teacherId, groupId)
                 .stream()
                 .map(CardexDTO::build)
                 .toList();

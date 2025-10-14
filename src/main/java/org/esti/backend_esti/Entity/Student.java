@@ -93,6 +93,9 @@ public class Student {
         if (form.getPhoneNumber() != null) {
             this.phoneNumber = form.getPhoneNumber();
         }
+        if (getGroup() != null) {
+            this.group = getGroup();
+        }
     }
 
     @PrePersist
