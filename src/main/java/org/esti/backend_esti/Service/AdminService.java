@@ -1,6 +1,9 @@
 package org.esti.backend_esti.Service;
 
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Form.AdminForm;
@@ -8,8 +11,6 @@ import org.esti.backend_esti.Repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AdminService {
@@ -24,12 +25,18 @@ public class AdminService {
         final Admin admin = new Admin(form);
         admin.setPassword(passwordEncoder.encode(form.getPassword()));
         adminRepository.save(admin);
+        admin.setCreatedAt(LocalDateTime.now());
         return AdminDTO.build(admin);
     }
 
     public AdminDTO updateAdmin(final AdminForm form, Long id) throws Exception {
         validateIfAdminExists(id);
         final Admin admin = adminRepository.findById(id).get();
+
+        if (form.getPassword() != null && !form.getPassword().isEmpty()) {
+            String encryptedPassword = passwordEncoder.encode(form.getPassword());
+            admin.setPassword(encryptedPassword);
+        }
         admin.updateAdmin(form);
         adminRepository.save(admin);
         return AdminDTO.build(admin);

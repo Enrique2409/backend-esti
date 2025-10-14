@@ -3,10 +3,11 @@ package org.esti.backend_esti.Entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.esti.backend_esti.Form.AdminForm;
+import org.esti.backend_esti.Form.TeacherForm;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -14,13 +15,13 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "administrator", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
-public class Admin {
+@Table(name = "teacher", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
+public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_admin")
-    private Long idAdmin;
+    @Column(name = "id_teacher")
+    private Long idTeacher;
 
     @Column (name = "name", length = 100, nullable = false)
     private String name;
@@ -31,10 +32,12 @@ public class Admin {
     @Column (name = "phone_number", length = 15)
     private String phoneNumber;
 
+    @NotNull
     @Column (name = "email", length = 100, nullable = false)
     private String email;
 
-    @Column(name = "password", length = 255, nullable = false)
+    @NotNull
+    @Column (name = "password", length = 255, nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -51,16 +54,16 @@ public class Admin {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    public Admin(final AdminForm form) {
+    public Teacher(final TeacherForm form) {
         this.name = form.getName();
         this.lastName = form.getLastName();
         this.phoneNumber = form.getPhoneNumber();
         this.email = form.getEmail();
         this.password = form.getPassword();
-        this.role = Role.ADMIN;
+        this.role = Role.TEACHER;
     }
 
-    public void updateAdmin(final AdminForm form) {
+    public void updateTeacher(final TeacherForm form) {
         if (form.getName() != null) {
             this.name = form.getName();
         }
@@ -73,15 +76,12 @@ public class Admin {
         if (form.getEmail() != null) {
             this.email = form.getEmail();
         }
-        /*if (form.getPassword() != null) {
-            this.password = form.getPassword();
-        }*/
         if (form.getRole() != null) {
             this.role = form.getRole();
         }
     }
 
-    @PrePersist
+    @PrePersist 
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
@@ -94,6 +94,4 @@ public class Admin {
     public void markAsDeleted() {
         this.deletedAt = LocalDateTime.now();
     }
-
-
 }

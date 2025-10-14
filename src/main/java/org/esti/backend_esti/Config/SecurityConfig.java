@@ -34,8 +34,41 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(HttpMethod.GET, "/esti/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/esti/admin/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/admin/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/admin/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/admin/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/auth/login").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/esti/group/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/group/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/group/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/group/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/esti/teacher/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/teacher/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/teacher/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/teacher/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/esti/student/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/student/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/student/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/student/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/esti/period/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/period/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/period/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/period    /**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/esti/cardex/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/cardex/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/cardex/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/cardex/**").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/esti/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/esti/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
