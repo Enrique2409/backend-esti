@@ -9,6 +9,9 @@ import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Form.AdminForm;
 import org.esti.backend_esti.Repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +56,25 @@ public class AdminService {
         return AdminDTO.build(admin);
     }
 
+    /*
     public List<AdminDTO> getAllAdmins()throws Exception {
         final List<Admin> admins = adminRepository.findAll();
         return admins.stream().map(AdminDTO::build).toList();
+    }*/
+
+    public Page<AdminDTO> getAdmins(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Admin> adminsPage = adminRepository.findAll(pageable);
+        return adminsPage.map(AdminDTO::build);
     }
+
+    public Page<AdminDTO> searchAdmins(String keyword, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Admin> adminsPage = adminRepository.searchAdmins(keyword, pageable);
+        return adminsPage.map(AdminDTO::build);
+    }
+
+
 
     public void validateIfAdminExists(Long id) throws Exception {
         if (!adminRepository.existsById(id)) {

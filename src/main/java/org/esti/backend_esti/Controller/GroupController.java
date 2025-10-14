@@ -1,11 +1,13 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
+import org.esti.backend_esti.DTO.CardexDTO;
 import org.esti.backend_esti.DTO.GroupDTO;
 import org.esti.backend_esti.Entity.Group;
 import org.esti.backend_esti.Form.GroupForm;
 import org.esti.backend_esti.Service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +58,15 @@ public class GroupController {
     public ResponseEntity<List<GroupDTO>> getAllGroups() {
         List<GroupDTO> groupsDTO = groupService.getAllGroups();
         return ResponseEntity.ok(groupsDTO);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Page<GroupDTO>> getGroups(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        Page<GroupDTO> groupsPage = groupService.getGroups(page, size);
+        return ResponseEntity.ok(groupsPage);
     }
 
     @GetMapping("/active")

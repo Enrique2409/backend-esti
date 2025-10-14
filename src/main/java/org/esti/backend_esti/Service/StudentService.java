@@ -1,12 +1,17 @@
 package org.esti.backend_esti.Service;
 
+import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.DTO.StudentDTO;
+import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Entity.Group;
 import org.esti.backend_esti.Entity.Student;
 import org.esti.backend_esti.Form.StudentForm;
 import org.esti.backend_esti.Repository.GroupRepository;
 import org.esti.backend_esti.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -52,6 +57,7 @@ public class StudentService {
         return StudentDTO.build(student);
     }
 
+    /*
     public List<Student> getStudentsByGroup(Long groupId) throws Exception {
         return studentRepository.findByGroupIdGroup(groupId);
     }
@@ -59,6 +65,19 @@ public class StudentService {
     public List<StudentDTO> getAllStudents() throws Exception {
         final List<Student> students = studentRepository.findAll();
         return students.stream().map(StudentDTO::build).toList();
+    }*/
+
+
+    public Page<StudentDTO> getStudents(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> studentsPage = studentRepository.findAll(pageable);
+        return studentsPage.map(StudentDTO::build);
+    }
+
+    public Page<StudentDTO> searchStudents(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> studentsPage = studentRepository.searchStudents(keyword, pageable);
+        return studentsPage.map(StudentDTO::build);
     }
 
     public List<Student> getAllActiveStudents() {

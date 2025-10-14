@@ -1,10 +1,15 @@
 package org.esti.backend_esti.Service;
 
+import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.DTO.TeacherDTO;
+import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.TeacherForm;
 import org.esti.backend_esti.Repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,9 +64,17 @@ public class TeacherService {
         return teachers.stream().map(TeacherDTO::build).toList();
     }
 
+    public Page<TeacherDTO> getTeachers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Teacher> teachersPage = teacherRepository.findAll(pageable);
+        return teachersPage.map(TeacherDTO::build);
+    }
+
     public List<Teacher> getAllActiveTeachers() {
         return teacherRepository.findAllActive();
     }
+
+
 
     public void deleteTeacherLogically(Long idTeacher) throws Exception {
         Teacher existingTeacher = teacherRepository.findById(idTeacher).orElseThrow(() ->
@@ -75,5 +88,12 @@ public class TeacherService {
         if (!teacherRepository.existsById(idTeacher)) {
             throw new Exception("Teacher Not Found");
         }
+    }
+
+
+    public Page<TeacherDTO> searchTeachers(String keyword, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<Teacher> teachersPage = teacherRepository.searchTeachers(keyword, pageable);
+        return teachersPage.map(TeacherDTO::build);
     }
 } 

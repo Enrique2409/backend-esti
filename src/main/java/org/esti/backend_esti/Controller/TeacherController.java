@@ -1,11 +1,13 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
+import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.DTO.TeacherDTO;
 import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.TeacherForm;
 import org.esti.backend_esti.Service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,10 +56,27 @@ public class TeacherController {
         return ResponseEntity.ok().body(teachersDTO);
     }
 
+    @GetMapping("/")
+    public ResponseEntity<Page<TeacherDTO>> getTeachers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        Page<TeacherDTO> teachersPage = teacherService.getTeachers(page, size);
+        return ResponseEntity.ok(teachersPage);
+    }
+
     @GetMapping("/active")
     public ResponseEntity<List<TeacherDTO>> getAllActiveTeachers() {
         List<Teacher> activeTeachers = teacherService.getAllActiveTeachers();
         List<TeacherDTO> activeTeacherDTOs = activeTeachers.stream().map(TeacherDTO::build).toList();
         return ResponseEntity.ok(activeTeacherDTOs);
+    }
+
+    @GetMapping("/search")
+    public Page<TeacherDTO> searchTeachers(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return teacherService.searchTeachers(keyword, page, size);
     }
 } 

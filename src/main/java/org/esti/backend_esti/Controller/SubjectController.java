@@ -1,11 +1,13 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
+import org.esti.backend_esti.DTO.StudentDTO;
 import org.esti.backend_esti.DTO.SubjectDTO;
 import org.esti.backend_esti.Entity.Subject;
 import org.esti.backend_esti.Form.SubjectForm;
 import org.esti.backend_esti.Service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +54,15 @@ public class SubjectController {
     public ResponseEntity<List<SubjectDTO>> getAllSubjects() {
         List<SubjectDTO> subjectsDTO = subjectService.getAllSubjects();
         return ResponseEntity.ok().body(subjectsDTO);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Page<SubjectDTO>> getSubjects(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        Page<SubjectDTO> subjectsPage = subjectService.getSubjects(page, size);
+        return ResponseEntity.ok(subjectsPage);
     }
 
     @GetMapping("/active")

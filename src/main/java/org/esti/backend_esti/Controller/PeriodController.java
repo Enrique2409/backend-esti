@@ -2,10 +2,12 @@ package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
 import org.esti.backend_esti.DTO.PeriodDTO;
+import org.esti.backend_esti.DTO.ReportDTO;
 import org.esti.backend_esti.Entity.Period;
 import org.esti.backend_esti.Form.PeriodForm;
 import org.esti.backend_esti.Service.PeriodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +54,15 @@ public class PeriodController {
     public ResponseEntity<List<PeriodDTO>> getAllPeriods() {
         List<PeriodDTO> periodsDTO = periodService.getAllPeriods();
         return ResponseEntity.ok().body(periodsDTO);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Page<PeriodDTO>> getReports(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        Page<PeriodDTO> periodsPage = periodService.getPeriods(page, size);
+        return ResponseEntity.ok(periodsPage);
     }
 
     @GetMapping("/active")

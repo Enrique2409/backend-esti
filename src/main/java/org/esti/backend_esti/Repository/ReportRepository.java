@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.esti.backend_esti.Entity.Report;
+import org.esti.backend_esti.Entity.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,4 +18,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     @Query("SELECT r FROM Report r WHERE r.deletedAt IS NULL")
     List<Report> findAllActive();
+
+    Page<Report> findAll(Pageable pageable);
 }

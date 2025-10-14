@@ -1,6 +1,7 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
+import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.DTO.GroupDTO;
 import org.esti.backend_esti.DTO.StudentDTO;
 import org.esti.backend_esti.Entity.Group;
@@ -8,6 +9,7 @@ import org.esti.backend_esti.Entity.Student;
 import org.esti.backend_esti.Form.StudentForm;
 import org.esti.backend_esti.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,12 +51,31 @@ public class StudentController {
         StudentDTO studentDTO = studentService.findById(studentId);
         return ResponseEntity.ok().body(studentDTO);
     }
-
+/*
     @GetMapping("/all")
     public ResponseEntity<List<StudentDTO>> getAllStudents() throws Exception {
         List<StudentDTO> studentsDTO = studentService.getAllStudents();
         return ResponseEntity.ok().body(studentsDTO);
+    }*/
+
+    @GetMapping("/")
+    public ResponseEntity<Page<StudentDTO>> getStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        Page<StudentDTO> studentsPage = studentService.getStudents(page, size);
+        return ResponseEntity.ok(studentsPage);
     }
+
+    @GetMapping("/students/search")
+    public Page<StudentDTO> searchStudents(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return studentService.searchStudents(keyword, page, size);
+    }
+
+
 
     @GetMapping("/active")
     public ResponseEntity<List<StudentDTO>> getAllActiveStudents() {

@@ -1,10 +1,12 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
+import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.DTO.CardexDTO;
 import org.esti.backend_esti.Form.CardexForm;
 import org.esti.backend_esti.Service.CardexService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,6 +83,13 @@ public class CardexController {
         return ResponseEntity.ok(filtered);
     }
 
+    @GetMapping("/")
+    public ResponseEntity<Page<CardexDTO>> getCardexs(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        Page<CardexDTO> cardexsPage = cardexService.getCardexs(page, size);
+        return ResponseEntity.ok(cardexsPage);
     @GetMapping("/teacher/{teacherId}/group/{groupId}")
     public ResponseEntity<List<CardexDTO>> getByTeacherAndGroup(@PathVariable("teacherId") Long teacherId, @PathVariable("groupId") Long groupId) {
         return ResponseEntity.ok(cardexService.getByTeacherAndGroup(teacherId, groupId));

@@ -1,10 +1,14 @@
 package org.esti.backend_esti.Service;
 
 import org.esti.backend_esti.DTO.CardexDTO;
+import org.esti.backend_esti.DTO.PeriodDTO;
 import org.esti.backend_esti.Entity.*;
 import org.esti.backend_esti.Form.CardexForm;
 import org.esti.backend_esti.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -80,6 +84,12 @@ public class CardexService {
                 .stream()
                 .map(CardexDTO::build)
                 .toList();
+    }
+
+    public Page<CardexDTO> getCardexs(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Cardex> cardexsPage = cardexRepository.findAll(pageable);
+        return cardexsPage.map(CardexDTO::build);
     }
 
     public List<CardexDTO> getByGroup(Long groupId) {

@@ -1,6 +1,9 @@
 package org.esti.backend_esti.Repository;
 
+import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Entity.Cardex;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,6 +34,7 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
             "AND c.deletedAt IS NULL")
     List<Cardex> findBySubjectId(Long subjectId);
 
+    Page<Cardex> findAll(Pageable pageable);
     @Query("SELECT c FROM Cardex c " +
             "WHERE c.teacherSubjectGroup.teacher.id = :teacherId " +
             "AND c.teacherSubjectGroup.group.id = :groupId " +
