@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
     Page<Admin> findAll(Pageable pageable);
@@ -18,4 +20,5 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
             "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :keyword, '%'))" +
             ")")
     Page<Admin> searchAdmins(String keyword, Pageable pageable);
+    Optional<Admin> findByEmail(String email);
 }

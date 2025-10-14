@@ -28,8 +28,11 @@ public class GroupService {
     }
 
     public GroupDTO createGroup(final GroupForm form) throws Exception {
-        Period period = periodRepository.findById(form.getPeriodId())
-                .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
+        Period period = null;
+        if (form.getPeriodId() != null) {
+            period = periodRepository.findById(form.getPeriodId())
+                    .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
+        }
 
         final Group group = new Group(form, period);
         groupRepository.save(group);
@@ -40,8 +43,11 @@ public class GroupService {
         validateIfGroupExists(idGroup);
         final Group group = groupRepository.findById(idGroup).get();
 
-        Period period = periodRepository.findById(form.getPeriodId())
-                .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
+        Period period = null;
+        if (form.getPeriodId() != null) {
+            period = periodRepository.findById(form.getPeriodId())
+                    .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
+        }
 
         group.updateGroup(form, period);
         groupRepository.save(group);

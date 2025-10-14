@@ -6,6 +6,7 @@ import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Entity.Group;
 import org.esti.backend_esti.Entity.Student;
 import org.esti.backend_esti.Form.StudentForm;
+import org.esti.backend_esti.Repository.GroupRepository;
 import org.esti.backend_esti.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,10 +23,16 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private GroupRepository groupRepository;
+
+
     public StudentDTO createStudent(final StudentForm form) {
-        final Student student = new Student(form);
-        studentRepository.save(student);
+        Group group = groupRepository.findById(form.getGroupId())
+                .orElseThrow(() -> new RuntimeException("Group not found with id: " + form.getGroupId()));
+        final Student student = new Student(form, group);
         student.setCreatedAt(LocalDateTime.now());
+        studentRepository.save(student);
         return StudentDTO.build(student);
     }
 
@@ -51,6 +58,10 @@ public class StudentService {
     }
 
     /*
+    public List<Student> getStudentsByGroup(Long groupId) throws Exception {
+        return studentRepository.findByGroupIdGroup(groupId);
+    }
+
     public List<StudentDTO> getAllStudents() throws Exception {
         final List<Student> students = studentRepository.findAll();
         return students.stream().map(StudentDTO::build).toList();

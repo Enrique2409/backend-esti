@@ -28,4 +28,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             "LOWER(s.curp) LIKE LOWER(CONCAT('%', :keyword, '%'))" +
             ")")
     Page<Student> searchStudents(String keyword, Pageable pageable);
+
+    List<Student> findByGroupIdGroup(Long groupId);
+
+    List<Student> findByGroupGroupName(String groupName);
+
+    List<Student> findByGroupGrade(Integer grade);
 }

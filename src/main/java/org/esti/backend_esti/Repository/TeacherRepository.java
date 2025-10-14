@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
@@ -25,4 +26,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
             "LOWER(t.lastName) LIKE LOWER(CONCAT('%', :keyword, '%'))" +
             ")")
     Page<Teacher> searchTeachers(String keyword, Pageable pageable);
+    Optional<Teacher> findByEmail(String email);
+
 } 

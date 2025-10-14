@@ -83,4 +83,9 @@ public class StudentController {
         List<StudentDTO> activeStudentDTOs = activeStudents.stream().map(StudentDTO::build).toList();
         return ResponseEntity.ok(activeStudentDTOs);
     }
+
+    @GetMapping("/group/{groupId}")
+    public List<Student> getStudentByGroup(@PathVariable("groupId") Long groupId) throws Exception {
+        return studentService.getStudentsByGroup(groupId);
+    }
 } 
