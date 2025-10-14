@@ -1,8 +1,6 @@
 package org.esti.backend_esti.Service;
 
-import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.DTO.TeacherDTO;
-import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.TeacherForm;
 import org.esti.backend_esti.Repository.TeacherRepository;
@@ -59,9 +57,12 @@ public class TeacherService {
         return TeacherDTO.build(teacher);
     }
 
-    public List<TeacherDTO> getAllTeachers() throws Exception {
-        final List<Teacher> teachers = teacherRepository.findAll();
-        return teachers.stream().map(TeacherDTO::build).toList();
+    public TeacherDTO findAnyById(Long id) throws Exception {
+        Teacher teacher = teacherRepository.findAnyById(id);
+        if (teacher == null){
+            throw new Exception("Teacher not found with id: " + id);
+        }
+        return TeacherDTO.build(teacher);
     }
 
     public Page<TeacherDTO> getTeachers(int page, int size) {
@@ -69,12 +70,6 @@ public class TeacherService {
         Page<Teacher> teachersPage = teacherRepository.findAll(pageable);
         return teachersPage.map(TeacherDTO::build);
     }
-
-    public List<Teacher> getAllActiveTeachers() {
-        return teacherRepository.findAllActive();
-    }
-
-
 
     public void deleteTeacherLogically(Long idTeacher) throws Exception {
         Teacher existingTeacher = teacherRepository.findById(idTeacher).orElseThrow(() ->
@@ -89,7 +84,6 @@ public class TeacherService {
             throw new Exception("Teacher Not Found");
         }
     }
-
 
     public Page<TeacherDTO> searchTeachers(String keyword, int page, int size) {
         PageRequest pageable = PageRequest.of(page, size);

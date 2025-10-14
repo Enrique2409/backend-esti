@@ -2,8 +2,6 @@ package org.esti.backend_esti.Service;
 
 
 import java.time.LocalDateTime;
-import java.util.List;
-
 import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.Entity.Admin;
 import org.esti.backend_esti.Form.AdminForm;
@@ -56,11 +54,13 @@ public class AdminService {
         return AdminDTO.build(admin);
     }
 
-    /*
-    public List<AdminDTO> getAllAdmins()throws Exception {
-        final List<Admin> admins = adminRepository.findAll();
-        return admins.stream().map(AdminDTO::build).toList();
-    }*/
+    public AdminDTO findAnyById(Long id) throws Exception {
+        Admin admin = adminRepository.findAnyById(id);
+        if (admin == null ) {
+            throw new Exception("Admin not found with id: " + admin);
+        }
+        return AdminDTO.build(admin);
+    }
 
     public Page<AdminDTO> getAdmins(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -74,7 +74,13 @@ public class AdminService {
         return adminsPage.map(AdminDTO::build);
     }
 
-
+    public void deleteAdminLogically(Long idAdmin) throws Exception {
+        Admin existingAdmin = adminRepository.findById(idAdmin).orElseThrow(() ->
+                new Exception("Admin not found with id: " + idAdmin)
+        );
+        existingAdmin.markAsDeleted();
+        adminRepository.save(existingAdmin);
+    }
 
     public void validateIfAdminExists(Long id) throws Exception {
         if (!adminRepository.existsById(id)) {

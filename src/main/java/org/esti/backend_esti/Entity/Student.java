@@ -5,10 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.esti.backend_esti.Form.StudentForm;
-
+import org.hibernate.annotations.Where;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Builder
@@ -16,6 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Where(clause = "deleted_at IS NULL")
 @Table(name = "students", uniqueConstraints = {@UniqueConstraint(columnNames = {"curp"})})
 public class Student {
 
