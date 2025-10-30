@@ -84,14 +84,24 @@ public class CardexController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Page<CardexDTO>> getCardexs(
+    public ResponseEntity<Page<CardexDTO>> getCardex(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "30") int size
     ) {
-        Page<CardexDTO> cardexsPage = cardexService.getCardexs(page, size);
+        Page<CardexDTO> cardexsPage = cardexService.getCardex(page, size);
         return ResponseEntity.ok(cardexsPage);
+    }
     @GetMapping("/teacher/{teacherId}/group/{groupId}")
     public ResponseEntity<List<CardexDTO>> getByTeacherAndGroup(@PathVariable("teacherId") Long teacherId, @PathVariable("groupId") Long groupId) {
         return ResponseEntity.ok(cardexService.getByTeacherAndGroup(teacherId, groupId));
     }
+
+    @GetMapping("/search")
+    public Page<CardexDTO> searchCardex (
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return cardexService.searchCardex(keyword, page, size);
+    }
+
 }

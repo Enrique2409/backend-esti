@@ -1,19 +1,13 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
-import org.esti.backend_esti.DTO.AdminDTO;
-import org.esti.backend_esti.DTO.GroupDTO;
 import org.esti.backend_esti.DTO.StudentDTO;
-import org.esti.backend_esti.Entity.Group;
-import org.esti.backend_esti.Entity.Student;
 import org.esti.backend_esti.Form.StudentForm;
 import org.esti.backend_esti.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/esti/student")
@@ -51,12 +45,12 @@ public class StudentController {
         StudentDTO studentDTO = studentService.findById(studentId);
         return ResponseEntity.ok().body(studentDTO);
     }
-/*
-    @GetMapping("/all")
-    public ResponseEntity<List<StudentDTO>> getAllStudents() throws Exception {
-        List<StudentDTO> studentsDTO = studentService.getAllStudents();
-        return ResponseEntity.ok().body(studentsDTO);
-    }*/
+
+    @GetMapping("/{studentId}/any")
+    public ResponseEntity<StudentDTO> findAnyById(@PathVariable("studentId") Long studentId) throws Exception {
+        StudentDTO studentDTO = studentService.findAnyById(studentId);
+        return ResponseEntity.ok().body(studentDTO);
+    }
 
     @GetMapping("/")
     public ResponseEntity<Page<StudentDTO>> getStudents(
@@ -67,7 +61,7 @@ public class StudentController {
         return ResponseEntity.ok(studentsPage);
     }
 
-    @GetMapping("/students/search")
+    @GetMapping("/search")
     public Page<StudentDTO> searchStudents(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
@@ -76,16 +70,4 @@ public class StudentController {
     }
 
 
-
-    @GetMapping("/active")
-    public ResponseEntity<List<StudentDTO>> getAllActiveStudents() {
-        List<Student> activeStudents = studentService.getAllActiveStudents();
-        List<StudentDTO> activeStudentDTOs = activeStudents.stream().map(StudentDTO::build).toList();
-        return ResponseEntity.ok(activeStudentDTOs);
-    }
-
-    @GetMapping("/group/{groupId}")
-    public List<Student> getStudentByGroup(@PathVariable("groupId") Long groupId) throws Exception {
-        return studentService.getStudentsByGroup(groupId);
-    }
 } 

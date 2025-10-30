@@ -1,9 +1,7 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
-import org.esti.backend_esti.DTO.AdminDTO;
 import org.esti.backend_esti.DTO.TeacherDTO;
-import org.esti.backend_esti.Entity.Teacher;
 import org.esti.backend_esti.Form.TeacherForm;
 import org.esti.backend_esti.Service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +48,10 @@ public class TeacherController {
         return ResponseEntity.ok().body(teacherDTO);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<TeacherDTO>> getAllTeachers() throws Exception {
-        List<TeacherDTO> teachersDTO = teacherService.getAllTeachers();
-        return ResponseEntity.ok().body(teachersDTO);
+    @GetMapping("/{teacherId}/any")
+    public ResponseEntity<TeacherDTO> findAnyById(@PathVariable("teacherId") Long teacherId) throws Exception {
+        TeacherDTO teacherDTO = teacherService.findAnyById(teacherId);
+        return ResponseEntity.ok(teacherDTO);
     }
 
     @GetMapping("/")
@@ -63,13 +61,6 @@ public class TeacherController {
     ) {
         Page<TeacherDTO> teachersPage = teacherService.getTeachers(page, size);
         return ResponseEntity.ok(teachersPage);
-    }
-
-    @GetMapping("/active")
-    public ResponseEntity<List<TeacherDTO>> getAllActiveTeachers() {
-        List<Teacher> activeTeachers = teacherService.getAllActiveTeachers();
-        List<TeacherDTO> activeTeacherDTOs = activeTeachers.stream().map(TeacherDTO::build).toList();
-        return ResponseEntity.ok(activeTeacherDTOs);
     }
 
     @GetMapping("/search")

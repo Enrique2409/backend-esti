@@ -47,9 +47,12 @@ public class SubjectService {
         return SubjectDTO.build(subject);
     }
 
-    public List<SubjectDTO> getAllSubjects() {
-        final List<Subject> subjects = subjectRepository.findAll();
-        return subjects.stream().map(SubjectDTO::build).toList();
+    public SubjectDTO findAnyById(Long id) throws Exception {
+        Subject subject = subjectRepository.findAnyById(id);
+        if (subject == null) {
+            throw new Exception("Subject not found with id: " + id);
+        }
+        return SubjectDTO.build(subject);
     }
 
     public Page<SubjectDTO> getSubjects(int page, int size) {
@@ -58,8 +61,10 @@ public class SubjectService {
         return subjectsPage.map(SubjectDTO::build);
     }
 
-    public List<Subject> getAllActiveSubjects() {
-        return subjectRepository.findAllActive();
+    public Page<SubjectDTO> searchSubjects(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Subject> subjectsPage = subjectRepository.searchSubjects(keyword, pageable);
+        return subjectsPage.map(SubjectDTO::build);
     }
 
     public void deleteSubjectLogically(Long idSubject) throws Exception {

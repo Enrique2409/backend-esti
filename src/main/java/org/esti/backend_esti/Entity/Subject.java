@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.esti.backend_esti.Form.SubjectForm;
-
+import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "subject")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Where(clause = "deleted_at IS NULL")
 public class Subject {
 
     @Id

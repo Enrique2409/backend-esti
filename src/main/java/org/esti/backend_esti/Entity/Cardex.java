@@ -2,13 +2,10 @@ package org.esti.backend_esti.Entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.esti.backend_esti.Form.CardexForm;
-
-import java.time.LocalDate;
+import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Builder
@@ -16,6 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Where(clause = "deleted_at IS NULL")
 @Table(name = "cardex")
 public class Cardex {
 

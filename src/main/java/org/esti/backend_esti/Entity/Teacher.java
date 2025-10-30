@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.esti.backend_esti.Form.TeacherForm;
-
+import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Builder
@@ -15,6 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Where(clause = "deleted_at IS NULL")
 @Table(name = "teacher", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class Teacher {
 

@@ -1,17 +1,13 @@
 package org.esti.backend_esti.Controller;
 
 import jakarta.validation.Valid;
-import org.esti.backend_esti.DTO.StudentDTO;
 import org.esti.backend_esti.DTO.SubjectDTO;
-import org.esti.backend_esti.Entity.Subject;
 import org.esti.backend_esti.Form.SubjectForm;
 import org.esti.backend_esti.Service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/esti/subject")
@@ -50,10 +46,10 @@ public class SubjectController {
         return ResponseEntity.ok().body(subjectDTO);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<SubjectDTO>> getAllSubjects() {
-        List<SubjectDTO> subjectsDTO = subjectService.getAllSubjects();
-        return ResponseEntity.ok().body(subjectsDTO);
+    @GetMapping("/{subjectId}/any")
+    public ResponseEntity<SubjectDTO> findAnyById(@PathVariable("subjectId") Long subjectId) throws Exception {
+        SubjectDTO subjectDTO = subjectService.findAnyById(subjectId);
+        return ResponseEntity.ok(subjectDTO);
     }
 
     @GetMapping("/")
@@ -65,10 +61,12 @@ public class SubjectController {
         return ResponseEntity.ok(subjectsPage);
     }
 
-    @GetMapping("/active")
-    public ResponseEntity<List<SubjectDTO>> getAllActiveSubjects() {
-        List<Subject> activeSubjects = subjectService.getAllActiveSubjects();
-        List<SubjectDTO> activeSubjectDTOs = activeSubjects.stream().map(SubjectDTO::build).toList();
-        return ResponseEntity.ok(activeSubjectDTOs);
+    @GetMapping("/search")
+    public Page<SubjectDTO> searchSubjects(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return subjectService.searchSubjects(keyword, page, size);
     }
+
 }

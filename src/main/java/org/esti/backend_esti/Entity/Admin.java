@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.esti.backend_esti.Form.AdminForm;
-
-import java.time.LocalDate;
+import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Where(clause = "deleted_at IS NULL")
 @Table(name = "administrator", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class Admin {
 

@@ -86,10 +86,10 @@ public class CardexService {
                 .toList();
     }
 
-    public Page<CardexDTO> getCardexs(int page, int size) {
+    public Page<CardexDTO> getCardex (int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Cardex> cardexsPage = cardexRepository.findAll(pageable);
-        return cardexsPage.map(CardexDTO::build);
+        Page<Cardex> cardexPage = cardexRepository.findAll(pageable);
+        return cardexPage.map(CardexDTO::build);
     }
 
     public List<CardexDTO> getByGroup(Long groupId) {
@@ -131,5 +131,11 @@ public class CardexService {
         if (!cardexRepository.existsById(idCardex)) {
             throw new Exception("Cardex not found with id: " + idCardex);
         }
+    }
+
+    public Page<CardexDTO> searchCardex (String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page <Cardex> cardexPage = cardexRepository.searchCardex(keyword, pageable);
+        return cardexPage.map(CardexDTO::build);
     }
 }
