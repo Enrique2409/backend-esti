@@ -3,7 +3,7 @@ package org.esti.backend_esti.Entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.esti.backend_esti.Form.TeacherSubjectGroupForm;
+import org.esti.backend_esti.Form.TeacherSubjectForm;
 
 import java.time.LocalDateTime;
 
@@ -13,18 +13,13 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "teacher_subject_group")
-public class TeacherSubjectGroup {
+@Table(name = "teacher_subject")
+public class TeacherSubject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_teacher_subject_group")
-    private Long idTeacherSubjectGroup;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_group", nullable = false)
-    private Group group;
+    @Column(name = "id_teacher_subject")
+    private Long idTeacherSubject;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -46,14 +41,12 @@ public class TeacherSubjectGroup {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    public TeacherSubjectGroup(final TeacherSubjectGroupForm form, final Group group, final Teacher teacher, final Subject subject) {
-        this.group = group;
+    public TeacherSubject(final TeacherSubjectForm form, final Teacher teacher, final Subject subject) {
         this.teacher = teacher;
         this.subject = subject;
     }
 
-    public void updateFromForm(final TeacherSubjectGroupForm form, final Group group, final Teacher teacher, final Subject subject) {
-        this.group = group;
+    public void updateFromForm(final TeacherSubjectForm form, final Teacher teacher, final Subject subject) {
         this.teacher = teacher;
         this.subject = subject;
     }

@@ -1,7 +1,6 @@
 package org.esti.backend_esti.Service;
 
 import org.esti.backend_esti.DTO.CardexDTO;
-import org.esti.backend_esti.DTO.PeriodDTO;
 import org.esti.backend_esti.Entity.*;
 import org.esti.backend_esti.Form.CardexForm;
 import org.esti.backend_esti.Repository.*;
@@ -19,27 +18,32 @@ public class CardexService {
 
     private final CardexRepository cardexRepository;
     private final StudentRepository studentRepository;
-    private final TeacherSubjectGroupRepository teacherSubjectGroupRepository;
+    private final TeacherSubjectRepository teacherSubjectRepository;
+    private final PeriodRepository periodRepository;
 
     @Autowired
     public CardexService(
             CardexRepository cardexRepository,
             StudentRepository studentRepository,
-            TeacherSubjectGroupRepository teacherSubjectGroupRepository
+            TeacherSubjectRepository teacherSubjectRepository,
+            PeriodRepository periodRepository
     ) {
         this.cardexRepository = cardexRepository;
         this.studentRepository = studentRepository;
-        this.teacherSubjectGroupRepository = teacherSubjectGroupRepository;
+        this.teacherSubjectRepository = teacherSubjectRepository;
+        this.periodRepository = periodRepository;
     }
 
 
     public CardexDTO createCardex(CardexForm form) throws Exception {
         Student student = studentRepository.findById(form.getStudentId())
                 .orElseThrow(() -> new Exception("Student not found with id: " + form.getStudentId()));
-        TeacherSubjectGroup teacherSubjectGroup = teacherSubjectGroupRepository.findById(form.getTeacherSubjectGroupId())
-                .orElseThrow(() -> new Exception("TeacherSubjectGroup not found with id: " + form.getTeacherSubjectGroupId()));
+        TeacherSubject teacherSubject = teacherSubjectRepository.findById(form.getTeacherSubjectId())
+                .orElseThrow(() -> new Exception("TeacherSubject not found with id: " + form.getTeacherSubjectId()));
+        Period period = periodRepository.findById(form.getPeriodId())
+                .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
 
-        Cardex cardex = new Cardex(form, student, teacherSubjectGroup);
+        Cardex cardex = new Cardex(form, student, teacherSubject, period);
         cardexRepository.save(cardex);
         cardex.setCreatedAt(LocalDateTime.now());
         return CardexDTO.build(cardex);
@@ -51,10 +55,12 @@ public class CardexService {
 
         Student student = studentRepository.findById(form.getStudentId())
                 .orElseThrow(() -> new Exception("Student not found with id: " + form.getStudentId()));
-        TeacherSubjectGroup teacherSubjectGroup = teacherSubjectGroupRepository.findById(form.getTeacherSubjectGroupId())
-                .orElseThrow(() -> new Exception("TeacherSubjectGroup not found with id: " + form.getTeacherSubjectGroupId()));
+        TeacherSubject teacherSubject = teacherSubjectRepository.findById(form.getTeacherSubjectId())
+                .orElseThrow(() -> new Exception("TeacherSubject not found with id: " + form.getTeacherSubjectId()));
+        Period period = periodRepository.findById(form.getPeriodId())
+                .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
 
-        cardex.updateFromForm(form, student, teacherSubjectGroup);
+        cardex.updateFromForm(form, student, teacherSubject, period);
         cardexRepository.save(cardex);
         cardex.setUpdatedAt(LocalDateTime.now());
         return CardexDTO.build(cardex);
@@ -115,13 +121,6 @@ public class CardexService {
 
     public List<CardexDTO> getBySubject(Long subjectId) {
         return cardexRepository.findBySubjectId(subjectId)
-                .stream()
-                .map(CardexDTO::build)
-                .toList();
-    }
-
-    public List<CardexDTO> getByTeacherAndGroup(Long teacherId, Long groupId) {
-        return cardexRepository.findByTeacherAndGroup(teacherId, groupId)
                 .stream()
                 .map(CardexDTO::build)
                 .toList();

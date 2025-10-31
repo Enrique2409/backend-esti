@@ -13,29 +13,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class GroupService {
 
     private final GroupRepository groupRepository;
-    private final PeriodRepository periodRepository;
 
     @Autowired
     public GroupService(GroupRepository groupRepository, PeriodRepository periodRepository) {
         this.groupRepository = groupRepository;
-        this.periodRepository = periodRepository;
     }
 
     public GroupDTO createGroup(final GroupForm form) throws Exception {
-        Period period = null;
-        if (form.getPeriodId() != null) {
-            period = periodRepository.findById(form.getPeriodId())
-                    .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
-        }
-
-        final Group group = new Group(form, period);
+        final Group group = new Group(form);
         groupRepository.save(group);
+        group.setCreatedAt(LocalDateTime.now());
         return GroupDTO.build(group);
     }
 
@@ -43,14 +37,9 @@ public class GroupService {
         validateIfGroupExists(idGroup);
         final Group group = groupRepository.findById(idGroup).get();
 
-        Period period = null;
-        if (form.getPeriodId() != null) {
-            period = periodRepository.findById(form.getPeriodId())
-                    .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
-        }
-
-        group.updateGroup(form, period);
+        group.updateGroup(form);
         groupRepository.save(group);
+        group.setUpdatedAt(LocalDateTime.now());
         return GroupDTO.build(group);
     }
 

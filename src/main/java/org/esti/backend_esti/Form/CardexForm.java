@@ -8,7 +8,9 @@ public class CardexForm implements Serializable{
 
     private Long studentId;
 
-    private Long teacherSubjectGroupId;
+    private Long teacherSubjectId;
+
+    private Long periodId;
 
     private Integer firstPartial;
 

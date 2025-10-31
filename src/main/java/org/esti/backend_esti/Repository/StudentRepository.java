@@ -30,4 +30,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query(value = "SELECT * FROM students WHERE id_student = :id", nativeQuery = true)
     Student findAnyById(@Param("id") Long id);
+
+    @Query("SELECT s FROM Student s WHERE s.deletedAt IS NULL AND s.group.id = :groupId")
+    List<Student> findByGroupId(Long groupId);
 }

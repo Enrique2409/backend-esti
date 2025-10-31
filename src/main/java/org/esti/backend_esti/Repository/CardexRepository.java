@@ -15,8 +15,8 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
 
     @Query("""
             SELECT c FROM Cardex c
-            JOIN c.teacherSubjectGroup tsg
-            JOIN tsg.group g
+            JOIN c.student s
+            JOIN s.group g
             WHERE g.id = :groupId
             AND c.deletedAt IS NULL
             """)
@@ -32,7 +32,7 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
 
     @Query("""
             SELECT c FROM Cardex c
-            JOIN c.teacherSubjectGroup tsg
+            JOIN c.teacherSubject tsg
             JOIN tsg.teacher t
             WHERE t.id = :teacherId
             AND c.deletedAt IS NULL
@@ -41,16 +41,16 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
 
     @Query("""
             SELECT c FROM Cardex c
-            JOIN c.teacherSubjectGroup tsg
+            JOIN c.teacherSubject tsg
             JOIN tsg.subject sb
             WHERE sb.id = :subjectId
             AND c.deletedAt IS NULL
             """)
     List<Cardex> findBySubjectId(@Param("subjectId") Long subjectId);
 
-    @Query("""
+    /*@Query("""
             SELECT c FROM Cardex c
-            JOIN c.teacherSubjectGroup tsg
+            JOIN c.teacherSubject tsg
             JOIN tsg.teacher t
             JOIN tsg.group g
             WHERE t.id = :teacherId
@@ -58,12 +58,12 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
             AND c.deletedAt IS NULL
             """)
     List<Cardex> findByTeacherAndGroup(@Param("teacherId") Long teacherId,
-                                       @Param("groupId") Long groupId);
+                                       @Param("groupId") Long groupId);*/
 
     @Query("""
             SELECT c FROM Cardex c
             JOIN c.student s
-            JOIN c.teacherSubjectGroup tsg
+            JOIN c.teacherSubject tsg
             JOIN tsg.teacher t
             WHERE c.deletedAt IS NULL
             AND (

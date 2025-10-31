@@ -91,10 +91,6 @@ public class CardexController {
         Page<CardexDTO> cardexsPage = cardexService.getCardex(page, size);
         return ResponseEntity.ok(cardexsPage);
     }
-    @GetMapping("/teacher/{teacherId}/group/{groupId}")
-    public ResponseEntity<List<CardexDTO>> getByTeacherAndGroup(@PathVariable("teacherId") Long teacherId, @PathVariable("groupId") Long groupId) {
-        return ResponseEntity.ok(cardexService.getByTeacherAndGroup(teacherId, groupId));
-    }
 
     @GetMapping("/search")
     public Page<CardexDTO> searchCardex (

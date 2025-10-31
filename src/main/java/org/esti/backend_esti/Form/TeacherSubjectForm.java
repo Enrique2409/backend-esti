@@ -5,9 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class TeacherSubjectGroupForm implements Serializable {
-
-    private Long groupId;
+public class TeacherSubjectForm implements Serializable {
 
     private Long teacherId;
 
