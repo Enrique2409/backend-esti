@@ -137,4 +137,27 @@ public class CardexService {
         Page <Cardex> cardexPage = cardexRepository.searchCardex(keyword, pageable);
         return cardexPage.map(CardexDTO::build);
     }
+
+    public Page<CardexDTO> searchStudentsByTeacher(
+            Long teacherId,
+            String subjectName,
+            String groupName,
+            Integer grade,
+            String keyword,
+            int page,
+            int size) {
+
+        PageRequest pageable = PageRequest.of(page, size);
+
+        Page<Cardex> cardexPage = cardexRepository.findByTeacherWithFilters(
+                teacherId,
+                subjectName,
+                groupName,
+                grade,
+                keyword,
+                pageable
+        );
+
+        return cardexPage.map(CardexDTO::build);
+    }
 }

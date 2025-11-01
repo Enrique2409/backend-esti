@@ -100,4 +100,25 @@ public class CardexController {
         return cardexService.searchCardex(keyword, page, size);
     }
 
+    @GetMapping("/searchbyTeacher")
+    public Page<CardexDTO> searchStudentsByTeacher(
+            @RequestParam Long teacherId,
+            @RequestParam(required = false) String subjectName,
+            @RequestParam(required = false) String groupName,
+            @RequestParam(required = false) Integer grade,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        return cardexService.searchStudentsByTeacher(
+                teacherId,
+                subjectName,
+                groupName,
+                grade,
+                keyword,
+                page,
+                size
+        );
+    }
+
 }
