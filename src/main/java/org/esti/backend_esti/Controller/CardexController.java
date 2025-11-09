@@ -99,7 +99,7 @@ public class CardexController {
             @RequestParam(defaultValue = "10") int size) {
         return cardexService.searchCardex(keyword, page, size);
     }
-
+/*
     @GetMapping("/searchbyTeacher")
     public Page<CardexDTO> searchStudentsByTeacher(
             @RequestParam Long teacherId,
@@ -120,9 +120,9 @@ public class CardexController {
                 size
         );
     }
+*/
 
-
-    @GetMapping("/searchbyTeacher2")
+    @GetMapping("/searchbyTeacher")
     public Page<CardexDTO> searchStudentsByTeacher(
             @RequestParam Long teacherId,
             @RequestParam(required = false) Long subjectId,
@@ -132,7 +132,7 @@ public class CardexController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        return cardexService.searchStudentsByTeacher2(
+        return cardexService.searchStudentsByTeacher(
                 teacherId,
                 subjectId,
                 groupName,

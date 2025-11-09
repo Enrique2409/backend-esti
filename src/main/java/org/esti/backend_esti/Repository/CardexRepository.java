@@ -103,7 +103,7 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
             @Param("periodId") Long periodId
     );
 
-
+/*
     @Query("""
         SELECT c FROM Cardex c
         JOIN c.teacherSubject ts
@@ -132,7 +132,7 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
             @Param("grade") Integer grade,
             @Param("keyword") String keyword,
             Pageable pageable
-    );
+    );*/
 
     @Query("""
     SELECT c FROM Cardex c
@@ -155,7 +155,7 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
     )
     ORDER BY g.grade ASC, g.groupName ASC, st.lastNamePaternal ASC, st.lastNameMaternal ASC, st.name ASC
 """)
-    Page<Cardex> findByTeacherWithFilters2(
+    Page<Cardex> findByTeacherWithFilters(
             @Param("teacherId") Long teacherId,
             @Param("subjectId") Long subjectId,
             @Param("groupName") String groupName,
