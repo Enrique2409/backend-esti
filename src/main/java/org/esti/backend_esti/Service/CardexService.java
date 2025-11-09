@@ -160,4 +160,29 @@ public class CardexService {
 
         return cardexPage.map(CardexDTO::build);
     }
+
+
+    public Page<CardexDTO> searchStudentsByTeacher2(
+            Long teacherId,
+            Long subjectId,
+            String groupName,
+            Integer grade,
+            String keyword,
+            int page,
+            int size) {
+
+        PageRequest pageable = PageRequest.of(page, size);
+
+        Page<Cardex> cardexPage = cardexRepository.findByTeacherWithFilters2(
+                teacherId,
+                subjectId,
+                groupName,
+                grade,
+                keyword,
+                pageable
+        );
+
+        return cardexPage.map(CardexDTO::build);
+    }
+
 }

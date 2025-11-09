@@ -133,4 +133,35 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
             @Param("keyword") String keyword,
             Pageable pageable
     );
+
+    @Query("""
+    SELECT c FROM Cardex c
+    JOIN c.teacherSubject ts
+    JOIN ts.teacher t
+    JOIN ts.subject s
+    JOIN c.student st
+    JOIN st.group g
+    LEFT JOIN c.period p
+    WHERE c.deletedAt IS NULL
+    AND t.idTeacher = :teacherId
+    AND (:subjectId IS NULL OR s.idSubject = :subjectId)
+    AND (:groupName IS NULL OR :groupName = '' OR LOWER(g.groupName) LIKE LOWER(CONCAT('%', :groupName, '%')))
+    AND (:grade IS NULL OR g.grade = :grade)
+    AND (
+        :keyword IS NULL OR :keyword = '' OR
+        LOWER(st.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
+        LOWER(st.lastNamePaternal) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
+        LOWER(st.lastNameMaternal) LIKE LOWER(CONCAT('%', :keyword, '%'))
+    )
+    ORDER BY g.grade ASC, g.groupName ASC, st.lastNamePaternal ASC, st.lastNameMaternal ASC, st.name ASC
+""")
+    Page<Cardex> findByTeacherWithFilters2(
+            @Param("teacherId") Long teacherId,
+            @Param("subjectId") Long subjectId,
+            @Param("groupName") String groupName,
+            @Param("grade") Integer grade,
+            @Param("keyword") String keyword,
+            Pageable pageable
+    );
+
 }

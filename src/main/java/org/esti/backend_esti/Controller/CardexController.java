@@ -121,4 +121,26 @@ public class CardexController {
         );
     }
 
+
+    @GetMapping("/searchbyTeacher2")
+    public Page<CardexDTO> searchStudentsByTeacher(
+            @RequestParam Long teacherId,
+            @RequestParam(required = false) Long subjectId,
+            @RequestParam(required = false) String groupName,
+            @RequestParam(required = false) Integer grade,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        return cardexService.searchStudentsByTeacher2(
+                teacherId,
+                subjectId,
+                groupName,
+                grade,
+                keyword,
+                page,
+                size
+        );
+    }
+
 }
