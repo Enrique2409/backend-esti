@@ -44,9 +44,9 @@ public class CardexService {
                 .orElseThrow(() -> new Exception("Period not found with id: " + form.getPeriodId()));
 
         Cardex cardex = new Cardex(form, student, teacherSubject, period);
-        cardexRepository.save(cardex);
-        cardex.setCreatedAt(LocalDateTime.now());
-        return CardexDTO.build(cardex);
+        Cardex savedCardex = cardexRepository.save(cardex);
+        savedCardex.setCreatedAt(LocalDateTime.now());
+        return CardexDTO.build(savedCardex);
     }
 
     public CardexDTO updateCardex(CardexForm form, Long idCardex) throws Exception {
