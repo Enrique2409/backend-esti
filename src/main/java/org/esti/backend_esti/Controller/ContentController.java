@@ -20,13 +20,6 @@ public class ContentController {
     @Autowired
     private ContentService contentService;
 
- /*   @PostMapping("/")
-    public ResponseEntity createContent(@RequestBody @Valid ContentForm form) {
-        ContentDTO contentDTO = contentService.createContent(form);
-        return ResponseEntity.ok().body(contentDTO);
-    }*/
-
-
     @PostMapping("/")
     public ResponseEntity<?> createContent(@ModelAttribute @Valid ContentForm form) {
         try {
@@ -40,12 +33,7 @@ public class ContentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Error inesperado: " + e.getMessage()));
         }
-    }/*
-    @PostMapping("/")
-    public ResponseEntity<ContentDTO> createContent(@ModelAttribute @Valid ContentForm form) {
-        ContentDTO contentDTO = contentService.createContent(form);
-        return ResponseEntity.ok().body(contentDTO);
-    }*/
+    }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ContentDTO> updateContent(@PathVariable Long id, @ModelAttribute ContentForm contentForm) {

@@ -23,7 +23,8 @@ public class ContentService {
     private static final Map<String, Integer> CATEGORY_LIMITS = Map.of(
             "Carrusel", 10,
             "Cards", 9,
-            "News", 20 // agrega más si necesitas
+            "News", 20 ,
+            "We", 1
     );
     @Autowired
     private ContentRepository contentRepository;
