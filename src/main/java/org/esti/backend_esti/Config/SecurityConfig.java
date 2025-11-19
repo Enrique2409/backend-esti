@@ -34,6 +34,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(requests -> requests
+                        .requestMatchers(HttpMethod.GET, "/esti/content/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/esti/content/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/esti/content/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/esti/content/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/esti/admin/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/esti/admin/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/esti/admin/**").permitAll()
