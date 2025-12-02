@@ -149,9 +149,8 @@ public class CardexSystemTest {
 
     @Test
     void shouldReturnBadRequestWhenCreatingCardexWithInvalidData() throws Exception {
-        // Arrange - Datos inválidos (estudiante inexistente)
         CardexForm form = new CardexForm();
-        form.setStudentId(999L); // ID inexistente
+        form.setStudentId(999L);
         form.setTeacherSubjectId(testTeacherSubject.getIdTeacherSubject());
         form.setPeriodId(testPeriod.getIdPeriod());
         form.setFirstPartial(95);
@@ -159,7 +158,6 @@ public class CardexSystemTest {
         form.setThirdPartial(88);
         form.setFinalGrade(91);
 
-        // Act & Assert - Con GlobalExceptionHandler debe dar 404 (not found)
         mockMvc.perform(post("/esti/cardex/create-cardex")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(form)))
@@ -169,7 +167,6 @@ public class CardexSystemTest {
 
     @Test
     void shouldGetCardexById() throws Exception {
-        // Arrange - Crear un cardex primero
         Cardex cardex = new Cardex();
         cardex.setStudent(testStudent);
         cardex.setTeacherSubject(testTeacherSubject);
@@ -180,7 +177,6 @@ public class CardexSystemTest {
         cardex.setFinalGrade(91);
         cardex = cardexRepository.save(cardex);
 
-        // Act & Assert
         mockMvc.perform(get("/esti/cardex/{cardexId}", cardex.getIdCardex()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idCardex").value(cardex.getIdCardex()))
@@ -272,7 +268,6 @@ public class CardexSystemTest {
 
     @Test
     void shouldDeleteCardexLogicallyViaRestAPI() throws Exception {
-        // Arrange - Crear un cardex primero
         Cardex cardex = new Cardex();
         cardex.setStudent(testStudent);
         cardex.setTeacherSubject(testTeacherSubject);
@@ -285,11 +280,9 @@ public class CardexSystemTest {
 
         Long cardexId = cardex.getIdCardex();
 
-        // Act & Assert - Eliminar lógicamente
         mockMvc.perform(delete("/esti/cardex/{cardexId}", cardexId))
                 .andExpect(status().isNoContent());
 
-        // Verificar que fue eliminado (no se puede encontrar)
         mockMvc.perform(get("/esti/cardex/{cardexId}", cardexId))
                 .andExpect(status().isNotFound());
     }
