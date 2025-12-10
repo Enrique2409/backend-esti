@@ -10,9 +10,7 @@ import java.util.List;
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
     public List<Content> findByState(boolean state);
-    List<Content> findByCategory(String category);
-    List<Content> findByCategoryAndStateTrue(String category);
-    List<Content> findByCategoryAndState(String category, boolean state);
+    List<Content> findByCategoryIgnoreCaseAndStateTrue(String category);
     List<Content> findByDeletedAtIsNull();
     List<Content> findByCategoryIgnoreCase(String category);
     int countByCategoryIgnoreCaseAndDeletedAtIsNull(String category);

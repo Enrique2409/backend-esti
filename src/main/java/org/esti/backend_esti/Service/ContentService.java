@@ -21,10 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class ContentService {
     private static final Map<String, Integer> CATEGORY_LIMITS = Map.of(
-            "Carrusel", 10,
+            "Carrusel", 8,
             "Cards", 9,
-            "News", 20 ,
-            "We", 1
+            "News", 6,
+            "We", 3,
+            "Register", 1,
+            "Contact", 1
     );
     @Autowired
     private ContentRepository contentRepository;
@@ -93,17 +95,13 @@ public class ContentService {
     }
 
     public ContentDTO updateContent(final Long idContent, final ContentForm contentForm) throws Exception {
-        // 1. Validar si existe el contenido
         Content content = contentRepository.findById(idContent)
                 .orElseThrow(() -> new RuntimeException("Contenido no encontrado con ID: " + idContent));
 
-        // 2. Actualizar imagen si se proporcionó una nueva
         MultipartFile newFile = contentForm.getImage();
         if (newFile != null && !newFile.isEmpty()) {
-            // 2.1 Eliminar la imagen anterior
             deleteImageFile(content.getImageURL());
 
-            // 2.2 Guardar la nueva imagen
             String filename = UUID.randomUUID() + "_" + newFile.getOriginalFilename();
             Path uploadPath = Paths.get("uploads");
             if (!Files.exists(uploadPath)) {
@@ -113,26 +111,21 @@ public class ContentService {
             Path newFilePath = uploadPath.resolve(filename);
             Files.write(newFilePath, newFile.getBytes());
 
-            // 2.3 Establecer nuevo link
             String newLink = "/uploads/" + filename;
             content.setImageURL(newLink);
         } else {
-            // Si no hay nueva imagen, conservar el link anterior o reemplazar con el proporcionado
             if (contentForm.getImageURL() != null && !contentForm.getImageURL().isBlank()) {
                 content.setImageURL(contentForm.getImageURL());
             }
         }
 
-        // 3. Actualizar otros datos del contenido
         content.setTitle(contentForm.getTitle());
         content.setDescription(contentForm.getDescription());
         content.setCategory(contentForm.getCategory());
         content.setState(contentForm.getState());
         content.setLink(contentForm.getLink());
-        // 4. Guardar cambios
         contentRepository.save(content);
 
-        // 5. Retornar DTO
         return ContentDTO.build(content);
     }
 
@@ -181,5 +174,13 @@ public class ContentService {
         return dtos;
     }
 
+    public List<ContentDTO> findByCategoryAndActive(final String category) {
+        final List<Content> contents = contentRepository
+                .findByCategoryIgnoreCaseAndStateTrue(category);
+
+        return contents.stream()
+                .map(ContentDTO::build)
+                .collect(Collectors.toList());
+    }
 
 }

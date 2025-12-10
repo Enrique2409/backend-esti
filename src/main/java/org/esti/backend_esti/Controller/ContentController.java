@@ -25,10 +25,8 @@ public class ContentController {
             ContentDTO contentDTO = contentService.createContent(form);
             return ResponseEntity.ok(contentDTO);
         } catch (RuntimeException e) {
-            // Devuelve el mensaje de error con código 400 (Bad Request)
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
-            // Para errores inesperados, devuelve 500 (Internal Server Error)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Error inesperado: " + e.getMessage()));
         }
@@ -68,4 +66,12 @@ public class ContentController {
     public ResponseEntity<List<ContentDTO>> getContentByCategory(@PathVariable String category) {
         return ResponseEntity.ok(contentService.findByCategory(category));
     }
+
+    @GetMapping("/category/{category}/active")
+    public ResponseEntity<List<ContentDTO>> findByCategoryAndActive(
+            @PathVariable String category
+    ) {
+        return ResponseEntity.ok(contentService.findByCategoryAndActive(category));
+    }
+
 }
