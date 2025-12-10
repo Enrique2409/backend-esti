@@ -94,7 +94,10 @@ public class SecurityConfig {
     public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
         org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
 
-        config.setAllowedOrigins(java.util.Arrays.asList("http://localhost:3000"));
+        config.setAllowedOrigins(java.util.Arrays.asList(
+                "http://localhost:3000",
+                "https://esti70.org",
+                "https://www.esti70.org"));
         config.setAllowedMethods(java.util.Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(java.util.Arrays.asList("*"));
         config.setAllowCredentials(true);
