@@ -28,21 +28,56 @@ public class StudentService {
 
 
     public StudentDTO createStudent(final StudentForm form) {
-        Group group = groupRepository.findById(form.getGroupId())
-                .orElseThrow(() -> new RuntimeException("Group not found with id: " + form.getGroupId()));
+        Group group = null;
+
+        if (form.getGroupId() != null){
+            group = groupRepository.findById(form.getGroupId())
+                    .orElseThrow(() -> new RuntimeException("Group not found with id: " + form.getGroupId()));
+        }
+
         final Student student = new Student(form, group);
         student.setCreatedAt(LocalDateTime.now());
         studentRepository.save(student);
         return StudentDTO.build(student);
     }
 
-    public StudentDTO updateStudent(final StudentForm form, Long idStudent) throws Exception {
+    /*public StudentDTO updateStudent(final StudentForm form, Long idStudent) throws Exception {
         validateIfStudentExists(idStudent);
-        final Student student = studentRepository.findById(idStudent).get();
+        Group group = null;
+
+        if (form.getGroupId() != null){
+            group = groupRepository.findById(form.getGroupId())
+                    .orElseThrow(() -> new RuntimeException("Group not found with id: " + form.getGroupId()));
+        }
+
+        final Student student = new Student(form, group);
         student.updateStudent(form);
         studentRepository.save(student);
         return StudentDTO.build(student);
+    }*/
+
+    public StudentDTO updateStudent(final StudentForm form, Long idStudent) throws Exception {
+        Student existingStudent = studentRepository.findById(idStudent)
+                .orElseThrow(() -> new Exception("Student not found with id: " + idStudent));
+
+        if (form.getGroupId() != null) {
+            Group group = groupRepository.findById(form.getGroupId())
+                    .orElseThrow(() -> new RuntimeException("Group not found with id: " + form.getGroupId()));
+            existingStudent.setGroup(group);
+        }
+
+        if (form.getName() != null) existingStudent.setName(form.getName());
+        if (form.getLastNamePaternal() != null) existingStudent.setLastNamePaternal(form.getLastNamePaternal());
+        if (form.getLastNameMaternal() != null) existingStudent.setLastNameMaternal(form.getLastNameMaternal());
+        if (form.getCurp() != null) existingStudent.setCurp(form.getCurp());
+        if (form.getBirthDate() != null) existingStudent.setBirthDate(form.getBirthDate());
+        if (form.getPhoneNumber() != null) existingStudent.setPhoneNumber(form.getPhoneNumber());
+
+        existingStudent.setUpdatedAt(LocalDateTime.now());
+        studentRepository.save(existingStudent);
+        return StudentDTO.build(existingStudent);
     }
+
 
     public void deleteStudent(final Long idStudent) throws Exception {
         validateIfStudentExists(idStudent);

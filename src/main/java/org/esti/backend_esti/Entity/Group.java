@@ -31,10 +31,6 @@ public class Group {
     @Column(name = "grade", nullable = false)
     private Integer grade;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_period")
-    private Period period;
-
     @NotNull
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -49,16 +45,14 @@ public class Group {
         this.idGroup = idGroup;
     }
 
-    public Group(final GroupForm form, Period period) {
+    public Group(final GroupForm form) {
         this.groupName = form.getGroupName();
         this.grade = form.getGrade();
-        this.period = period;
     }
 
-    public void updateGroup(final GroupForm form, final Period period) {
+    public void updateGroup(final GroupForm form) {
         this.groupName = form.getGroupName();
         this.grade = form.getGrade();
-        this.period = period;
     }
 
     @PrePersist

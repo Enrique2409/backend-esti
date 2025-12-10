@@ -15,7 +15,6 @@ public class CardexDTO {
     private Long idGroup;
     private String groupName;
     private Integer grade;
-    private String period;
 
     private Long idTeacher;
     private String teacherName;
@@ -28,6 +27,9 @@ public class CardexDTO {
 
     private Long idSubject;
     private String subjectName;
+
+    private Long idPeriod;
+    private String period;
 
     private Integer firstPartial;
 
@@ -46,19 +48,20 @@ public class CardexDTO {
     public static CardexDTO build(final Cardex cardex) {
         return CardexDTO.builder()
                 .idCardex(cardex.getIdCardex())
-                .idGroup(cardex.getTeacherSubjectGroup().getGroup().getIdGroup())
-                .groupName(cardex.getTeacherSubjectGroup().getGroup().getGroupName())
-                .grade(cardex.getTeacherSubjectGroup().getGroup().getGrade())
-                .period(cardex.getTeacherSubjectGroup().getGroup().getPeriod().getCve())
-                .idTeacher(cardex.getTeacherSubjectGroup().getTeacher().getIdTeacher())
-                .teacherName(cardex.getTeacherSubjectGroup().getTeacher().getName())
-                .teacherLastName(cardex.getTeacherSubjectGroup().getTeacher().getLastName())
+                .idGroup(cardex.getStudent().getGroup().getIdGroup())
+                .groupName(cardex.getStudent().getGroup().getGroupName())
+                .grade(cardex.getStudent().getGroup().getGrade())
+                .idPeriod(cardex.getPeriod().getIdPeriod())
+                .period(cardex.getPeriod().getCve())
+                .idTeacher(cardex.getTeacherSubject().getTeacher().getIdTeacher())
+                .teacherName(cardex.getTeacherSubject().getTeacher().getName())
+                .teacherLastName(cardex.getTeacherSubject().getTeacher().getLastName())
                 .idStudent(cardex.getStudent().getIdStudent())
                 .studentName(cardex.getStudent().getName())
                 .studentLastNamePaternal(cardex.getStudent().getLastNamePaternal())
                 .studentLastNameMaternal(cardex.getStudent().getLastNameMaternal())
-                .idSubject(cardex.getTeacherSubjectGroup().getSubject().getIdSubject())
-                .subjectName(cardex.getTeacherSubjectGroup().getSubject().getName())
+                .idSubject(cardex.getTeacherSubject().getSubject().getIdSubject())
+                .subjectName(cardex.getTeacherSubject().getSubject().getName())
                 .firstPartial(cardex.getFirstPartial())
                 .secondPartial(cardex.getSecondPartial())
                 .thirdPartial(cardex.getThirdPartial())

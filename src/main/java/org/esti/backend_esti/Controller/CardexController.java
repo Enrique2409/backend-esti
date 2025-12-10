@@ -91,10 +91,6 @@ public class CardexController {
         Page<CardexDTO> cardexsPage = cardexService.getCardex(page, size);
         return ResponseEntity.ok(cardexsPage);
     }
-    @GetMapping("/teacher/{teacherId}/group/{groupId}")
-    public ResponseEntity<List<CardexDTO>> getByTeacherAndGroup(@PathVariable("teacherId") Long teacherId, @PathVariable("groupId") Long groupId) {
-        return ResponseEntity.ok(cardexService.getByTeacherAndGroup(teacherId, groupId));
-    }
 
     @GetMapping("/search")
     public Page<CardexDTO> searchCardex (
@@ -102,6 +98,49 @@ public class CardexController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         return cardexService.searchCardex(keyword, page, size);
+    }
+/*
+    @GetMapping("/searchbyTeacher")
+    public Page<CardexDTO> searchStudentsByTeacher(
+            @RequestParam Long teacherId,
+            @RequestParam(required = false) String subjectName,
+            @RequestParam(required = false) String groupName,
+            @RequestParam(required = false) Integer grade,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        return cardexService.searchStudentsByTeacher(
+                teacherId,
+                subjectName,
+                groupName,
+                grade,
+                keyword,
+                page,
+                size
+        );
+    }
+*/
+
+    @GetMapping("/searchbyTeacher")
+    public Page<CardexDTO> searchStudentsByTeacher(
+            @RequestParam Long teacherId,
+            @RequestParam(required = false) Long subjectId,
+            @RequestParam(required = false) String groupName,
+            @RequestParam(required = false) Integer grade,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        return cardexService.searchStudentsByTeacher(
+                teacherId,
+                subjectId,
+                groupName,
+                grade,
+                keyword,
+                page,
+                size
+        );
     }
 
 }

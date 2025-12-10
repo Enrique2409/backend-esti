@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.esti.backend_esti.Entity.Student;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -33,8 +34,12 @@ public class StudentDTO {
                 .curp(student.getCurp())
                 .birthDate(student.getBirthDate())
                 .phoneNumber(student.getPhoneNumber())
-                .groupName(student.getGroup().getGroupName())
-                .grade(student.getGroup().getGrade())
+                .groupName(Optional.ofNullable(student.getGroup())
+                        .map(g -> g.getGroupName())
+                        .orElse(null))
+                .grade(Optional.ofNullable(student.getGroup())
+                        .map(g -> g.getGrade())
+                        .orElse(null))
                 .build();
     }
 

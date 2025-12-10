@@ -29,8 +29,12 @@ public class Cardex {
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_teacher_subject_group", nullable = false)
-    private TeacherSubjectGroup teacherSubjectGroup;
+    @JoinColumn(name = "id_teacher_subject", nullable = false)
+    private TeacherSubject teacherSubject;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_period")
+    private Period period;
 
     @Column(name="first_partial")
     private Integer firstPartial;
@@ -56,18 +60,20 @@ public class Cardex {
 
     public Cardex (Long idCardex) { this.idCardex = idCardex; }
 
-    public Cardex(final CardexForm form, final Student student, final TeacherSubjectGroup teacherSubjectGroup) {
+    public Cardex(final CardexForm form, final Student student, final TeacherSubject teacherSubject, final Period period) {
         this.student = student;
-        this.teacherSubjectGroup = teacherSubjectGroup;
+        this.teacherSubject = teacherSubject;
+        this.period = period;
         this.firstPartial = form.getFirstPartial();
         this.secondPartial = form.getSecondPartial();
         this.thirdPartial = form.getThirdPartial();
         this.finalGrade = form.getFinalGrade();
     }
 
-    public void updateFromForm(final CardexForm form, final Student student, final TeacherSubjectGroup teacherSubjectGroup) {
+    public void updateFromForm(final CardexForm form, final Student student, final TeacherSubject teacherSubject, final Period period) {
         this.student = student;
-        this.teacherSubjectGroup = teacherSubjectGroup;
+        this.teacherSubject = teacherSubject;
+        this.period = period;
         this.firstPartial = form.getFirstPartial();
         this.secondPartial = form.getSecondPartial();
         this.thirdPartial = form.getThirdPartial();

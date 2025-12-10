@@ -59,9 +59,7 @@ public class Student {
     private LocalDateTime deletedAt;
 
     public Student(final StudentForm form, final Group group) {
-        if (form == null) {
-            throw new IllegalArgumentException("El formulario de estudiante no puede ser nulo.");
-        }
+
         this.name = form.getName();
         this.lastNamePaternal = form.getLastNamePaternal();
         this.lastNameMaternal = form.getLastNameMaternal();
@@ -72,9 +70,7 @@ public class Student {
     }
 
     public void updateStudent(final StudentForm form) {
-        if (form == null) {
-            throw new IllegalArgumentException("El formulario de estudiante no puede ser nulo.");
-        }
+
         if (form.getName() != null) {
             this.name = form.getName();
         }

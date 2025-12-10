@@ -17,9 +17,10 @@ public class JwtUtil {
     private final String secretKey = Base64.getEncoder().encodeToString(
             "46557bdc6aff551c89de8c2823e1e05e21dbccf6eee4b9efea2a49cb73cbc9e1".getBytes());
 
-    public String generateToken(String username, Role role) {
+    public String generateToken(Long idUser, String username, Role role) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role.name());
+        claims.put("id", idUser);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -49,6 +50,10 @@ public class JwtUtil {
 
     public boolean isTokenValid(String token, String username) {
         return username.equals(extractUsername(token)) && !isTokenExpired(token);
+    }
+
+    public Long extractUserId(String token) {
+        return extractClaims(token).get("id", Long.class);
     }
 
     private boolean isTokenExpired(String token) {

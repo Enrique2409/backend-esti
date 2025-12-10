@@ -14,14 +14,11 @@ public class GroupDTO {
 
     private Integer grade;
 
-    private Long periodId;
-
     public static GroupDTO build(final Group group) {
         return GroupDTO.builder()
                 .idGroup(group.getIdGroup())
                 .groupName(group.getGroupName())
                 .grade(group.getGrade())
-                .periodId(group.getPeriod() != null ? group.getPeriod().getIdPeriod() : null)
                 .build();
     }
 }

@@ -11,5 +11,4 @@ public class GroupForm implements Serializable {
 
     private Integer grade;
 
-    private Long periodId;
 }

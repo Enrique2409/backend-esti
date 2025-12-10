@@ -15,8 +15,8 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
 
     @Query("""
             SELECT c FROM Cardex c
-            JOIN c.teacherSubjectGroup tsg
-            JOIN tsg.group g
+            JOIN c.student s
+            JOIN s.group g
             WHERE g.id = :groupId
             AND c.deletedAt IS NULL
             """)
@@ -32,7 +32,7 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
 
     @Query("""
             SELECT c FROM Cardex c
-            JOIN c.teacherSubjectGroup tsg
+            JOIN c.teacherSubject tsg
             JOIN tsg.teacher t
             WHERE t.id = :teacherId
             AND c.deletedAt IS NULL
@@ -41,16 +41,16 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
 
     @Query("""
             SELECT c FROM Cardex c
-            JOIN c.teacherSubjectGroup tsg
+            JOIN c.teacherSubject tsg
             JOIN tsg.subject sb
             WHERE sb.id = :subjectId
             AND c.deletedAt IS NULL
             """)
     List<Cardex> findBySubjectId(@Param("subjectId") Long subjectId);
 
-    @Query("""
+    /*@Query("""
             SELECT c FROM Cardex c
-            JOIN c.teacherSubjectGroup tsg
+            JOIN c.teacherSubject tsg
             JOIN tsg.teacher t
             JOIN tsg.group g
             WHERE t.id = :teacherId
@@ -58,12 +58,12 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
             AND c.deletedAt IS NULL
             """)
     List<Cardex> findByTeacherAndGroup(@Param("teacherId") Long teacherId,
-                                       @Param("groupId") Long groupId);
+                                       @Param("groupId") Long groupId);*/
 
     @Query("""
             SELECT c FROM Cardex c
             JOIN c.student s
-            JOIN c.teacherSubjectGroup tsg
+            JOIN c.teacherSubject tsg
             JOIN tsg.teacher t
             WHERE c.deletedAt IS NULL
             AND (
@@ -76,4 +76,92 @@ public interface CardexRepository extends JpaRepository<Cardex, Long> {
             )
             """)
     Page<Cardex> searchCardex(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query("""
+        SELECT c FROM Cardex c
+        JOIN c.teacherSubject ts
+        JOIN ts.teacher t
+        JOIN ts.subject s
+        JOIN c.student st
+        JOIN st.group g
+        LEFT JOIN c.period p
+        WHERE t.idTeacher = :teacherId
+        AND (:subjectName IS NULL OR LOWER(s.name) LIKE LOWER(CONCAT('%', :subjectName, '%')))
+        AND (:studentName IS NULL OR LOWER(st.name) LIKE LOWER(CONCAT('%', :studentName, '%')))
+        AND (:lastNamePaternal IS NULL OR LOWER(st.lastNamePaternal) LIKE LOWER(CONCAT('%', :lastNamePaternal, '%')))
+        AND (:lastNameMaternal IS NULL OR LOWER(st.lastNameMaternal) LIKE LOWER(CONCAT('%', :lastNameMaternal, '%')))
+        AND (:groupName IS NULL OR LOWER(g.groupName) LIKE LOWER(CONCAT('%', :groupName, '%')))
+        AND (:periodId IS NULL OR p.idPeriod = :periodId)
+    """)
+    List<Cardex> findStudentsByTeacherWithFilters(
+            @Param("teacherId") Long teacherId,
+            @Param("subjectName") String subjectName,
+            @Param("studentName") String studentName,
+            @Param("lastNamePaternal") String lastNamePaternal,
+            @Param("lastNameMaternal") String lastNameMaternal,
+            @Param("groupName") String groupName,
+            @Param("periodId") Long periodId
+    );
+
+/*
+    @Query("""
+        SELECT c FROM Cardex c
+        JOIN c.teacherSubject ts
+        JOIN ts.teacher t
+        JOIN ts.subject s
+        JOIN c.student st
+        JOIN st.group g
+        LEFT JOIN c.period p
+        WHERE c.deletedAt IS NULL
+        AND t.idTeacher = :teacherId
+        AND (:subjectName IS NULL OR :subjectName = '' OR LOWER(s.name) LIKE LOWER(CONCAT('%', :subjectName, '%')))
+        AND (:groupName IS NULL OR :groupName = '' OR LOWER(g.groupName) LIKE LOWER(CONCAT('%', :groupName, '%')))
+        AND (:grade IS NULL OR g.grade = :grade)
+        AND (
+            :keyword IS NULL OR :keyword = '' OR
+            LOWER(st.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
+            LOWER(st.lastNamePaternal) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
+            LOWER(st.lastNameMaternal) LIKE LOWER(CONCAT('%', :keyword, '%'))
+        )
+        ORDER BY g.grade ASC, g.groupName ASC, st.lastNamePaternal ASC, st.lastNameMaternal ASC, st.name ASC
+    """)
+    Page<Cardex> findByTeacherWithFilters(
+            @Param("teacherId") Long teacherId,
+            @Param("subjectName") String subjectName,
+            @Param("groupName") String groupName,
+            @Param("grade") Integer grade,
+            @Param("keyword") String keyword,
+            Pageable pageable
+    );*/
+
+    @Query("""
+    SELECT c FROM Cardex c
+    JOIN c.teacherSubject ts
+    JOIN ts.teacher t
+    JOIN ts.subject s
+    JOIN c.student st
+    JOIN st.group g
+    LEFT JOIN c.period p
+    WHERE c.deletedAt IS NULL
+    AND t.idTeacher = :teacherId
+    AND (:subjectId IS NULL OR s.idSubject = :subjectId)
+    AND (:groupName IS NULL OR :groupName = '' OR LOWER(g.groupName) LIKE LOWER(CONCAT('%', :groupName, '%')))
+    AND (:grade IS NULL OR g.grade = :grade)
+    AND (
+        :keyword IS NULL OR :keyword = '' OR
+        LOWER(st.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
+        LOWER(st.lastNamePaternal) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
+        LOWER(st.lastNameMaternal) LIKE LOWER(CONCAT('%', :keyword, '%'))
+    )
+    ORDER BY g.grade ASC, g.groupName ASC, st.lastNamePaternal ASC, st.lastNameMaternal ASC, st.name ASC
+""")
+    Page<Cardex> findByTeacherWithFilters(
+            @Param("teacherId") Long teacherId,
+            @Param("subjectId") Long subjectId,
+            @Param("groupName") String groupName,
+            @Param("grade") Integer grade,
+            @Param("keyword") String keyword,
+            Pageable pageable
+    );
+
 }
