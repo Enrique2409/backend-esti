@@ -34,11 +34,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(requests -> requests
+			.requestMatchers(HttpMethod.POST, "/esti/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/esti/admin/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/esti/admin/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/esti/admin/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/esti/admin/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/esti/auth/login").permitAll()
+                        //.requestMatchers(HttpMethod.POST, "/esti/auth/login").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/esti/group/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/esti/group/**").permitAll()
@@ -72,7 +73,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/esti/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
+               // .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

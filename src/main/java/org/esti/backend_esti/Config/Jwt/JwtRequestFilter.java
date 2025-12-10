@@ -26,6 +26,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+	String path = request.getRequestURI();
+    if (path.equals("/esti/auth/login") || 
+        path.startsWith("/esti/admin") || 
+        path.startsWith("/esti/group") ||
+        path.startsWith("/esti/teacher") ||
+        path.startsWith("/esti/student") ||
+        path.startsWith("/esti/period") ||
+        path.startsWith("/esti/cardex")) {
+        chain.doFilter(request, response);
+        return;
+    }
+
         final String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
