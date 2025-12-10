@@ -1,6 +1,5 @@
 package org.esti.backend_esti.Service;
 
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.esti.backend_esti.DTO.LockedResponse;
@@ -19,13 +18,7 @@ public class SystemConfigService {
     private final SystemConfigRepository systemConfigRepository;
 
     public SystemConfigDTO getConfiguration() {
-        SystemConfig config = systemConfigRepository.findById(1L)
-                .orElseGet(() -> {
-                    SystemConfig newConfig = new SystemConfig();
-                    newConfig.setId(1L);
-                    newConfig.setLockedGrades(false);
-                    return systemConfigRepository.save(newConfig);
-                });
+        SystemConfig config = getOrInitConfig();
         return converterToDTO(config);
     }
 
@@ -35,12 +28,7 @@ public class SystemConfigService {
 
     @Transactional
     public LockedResponse changeStatusGrades(LockedGradesForm form, Long adminId) {
-        SystemConfig config = systemConfigRepository.findById(1L)
-                .orElseGet(() -> {
-                    SystemConfig newConfig = new SystemConfig();
-                    newConfig.setId(1L);
-                    return newConfig;
-                });
+        SystemConfig config = getOrInitConfig();
         config.setLockedGrades(form.getLock());
         config.setLockedDate(LocalDateTime.now());
         config.setLockedBy(adminId);
@@ -55,13 +43,21 @@ public class SystemConfigService {
         return new LockedResponse(true, message, config.getLockedGrades());
     }
 
+    private SystemConfig getOrInitConfig() {
+        return systemConfigRepository.findAll().stream().findFirst()
+                .orElseGet(() -> {
+                    SystemConfig newConfig = new SystemConfig();
+                    newConfig.setLockedGrades(false);
+                    return systemConfigRepository.save(newConfig);
+                });
+    }
+
     private SystemConfigDTO converterToDTO(SystemConfig entity) {
         return new SystemConfigDTO(
                 entity.getId(),
                 entity.getLockedGrades(),
                 entity.getLockedDate(),
                 entity.getLockedBy(),
-                entity.getNotes()
-        );
+                entity.getNotes());
     }
 }
