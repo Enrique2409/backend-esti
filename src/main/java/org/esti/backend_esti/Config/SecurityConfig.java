@@ -34,7 +34,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(requests -> requests
-			.requestMatchers(HttpMethod.POST, "/esti/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+			            .requestMatchers(HttpMethod.POST, "/esti/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/esti/admin/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/esti/admin/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/esti/admin/**").permitAll()
