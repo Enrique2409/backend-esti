@@ -126,7 +126,7 @@ public class CardexIntegrationTest {
     @Test
     void shouldThrowExceptionWhenStudentNotFound() {
         CardexForm form = new CardexForm();
-        form.setStudentId(999L); // ID inexistente
+        form.setStudentId(999L);
         form.setTeacherSubjectId(testTeacherSubject.getIdTeacherSubject());
         form.setPeriodId(testPeriod.getIdPeriod());
         form.setFirstPartial(90);
