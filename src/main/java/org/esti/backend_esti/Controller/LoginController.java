@@ -1,6 +1,5 @@
 package org.esti.backend_esti.Controller;
 
-
 import org.esti.backend_esti.Entity.Auth.AuthResponse;
 import org.esti.backend_esti.Entity.Auth.LoginRequest;
 import org.esti.backend_esti.Service.LoginService;
@@ -20,12 +19,13 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             AuthResponse authResponse = loginService.login(request.getEmail(), request.getPassword());
             return ResponseEntity.ok(authResponse);
         } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(java.util.Collections.singletonMap("message", "Invalid credentials"));
         }
     }
 
