@@ -1,6 +1,5 @@
 package org.esti.backend_esti.Config;
 
-
 import org.esti.backend_esti.Config.Jwt.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,52 +34,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-			            .requestMatchers(HttpMethod.POST, "/esti/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/esti/content/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/esti/content/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/esti/content/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/esti/content/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/esti/admin/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/esti/admin/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/esti/admin/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/esti/admin/**").permitAll()
-                        //.requestMatchers(HttpMethod.POST, "/esti/auth/login").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/esti/group/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/esti/group/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/esti/group/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/esti/group/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/esti/teacher/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/esti/teacher/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/esti/teacher/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/esti/teacher/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/esti/student/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/esti/student/").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/esti/student/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/esti/student/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/esti/student/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/esti/period/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/esti/period/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/esti/period/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/esti/period/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET, "/esti/cardex/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/esti/cardex/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/esti/cardex/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/esti/cardex/**").permitAll()
-
-                        .requestMatchers(HttpMethod.POST, "/esti/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/esti/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/esti/**").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/esti/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-               // .httpBasic(Customizer.withDefaults())
+                        .requestMatchers("/esti/auth/**").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
+                        .anyRequest().authenticated())
+                // .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -110,12 +67,10 @@ public class SecurityConfig {
         config.setAllowedHeaders(java.util.Arrays.asList("*"));
         config.setAllowCredentials(true);
 
-        org.springframework.web.cors.UrlBasedCorsConfigurationSource source =
-                new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+        org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
 
         source.registerCorsConfiguration("/**", config);
         return source;
     }
 
 }
-
