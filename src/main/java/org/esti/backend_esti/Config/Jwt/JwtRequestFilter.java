@@ -4,6 +4,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -16,6 +18,7 @@ import java.util.Collections;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
     private final JwtUtil jwtUtil;
 
     public JwtRequestFilter(JwtUtil jwtUtil) {
@@ -27,27 +30,46 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String path = request.getRequestURI();
+        logger.info("🔍 Processing request to: {}", path);
+
         if (path.equals("/esti/auth/login")) {
+            logger.info("✅ Login endpoint - skipping JWT validation");
             chain.doFilter(request, response);
             return;
         }
 
         final String authorizationHeader = request.getHeader("Authorization");
+        logger.info("📋 Authorization header: {}", authorizationHeader != null ? "Present" : "Missing");
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String token = authorizationHeader.substring(7);
+            try {
+                String token = authorizationHeader.substring(7);
+                logger.info("🎫 Token extracted (length: {})", token.length());
 
-            if (jwtUtil.isTokenValid(token, jwtUtil.extractUsername(token))) {
-                Long userId = jwtUtil.extractUserId(token);
                 String username = jwtUtil.extractUsername(token);
-                String role = jwtUtil.extractRole(token);
+                logger.info("👤 Username from token: {}", username);
 
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        username, null, Collections.singleton(() -> "ROLE_" + role));
+                if (jwtUtil.isTokenValid(token, username)) {
+                    Long userId = jwtUtil.extractUserId(token);
+                    String role = jwtUtil.extractRole(token);
 
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    logger.info("✅ Token valid - User: {}, Role: {}, ID: {}", username, role, userId);
+
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            username, null, Collections.singleton(() -> "ROLE_" + role));
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    logger.info("🔐 Authentication set in SecurityContext");
+                } else {
+                    logger.warn("❌ Token validation failed for user: {}", username);
+                }
+            } catch (Exception e) {
+                logger.error("❌ Error processing JWT token: {}", e.getMessage(), e);
             }
+        } else {
+            logger.warn("⚠️ No valid Authorization header found");
         }
 
         chain.doFilter(request, response);
